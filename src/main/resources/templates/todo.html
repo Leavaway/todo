@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    <link href="bootstrap-5.1.3-dist/css/bootstrap.css" rel="stylesheet">-->
+    <!--    <script src="bootstrap-5.1.3-dist/jquery-3.6.0.min.js"></script>-->
+    <!--    <script src="bootstrap-5.1.3-dist/js/bootstrap.js"></script>-->
+
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+
+    </style>
+    <script>
+        window.onload = function myf() {
+            document.addEventListener("keyup", e => {
+                if(e.code === "Slash") {
+                    todoInput.focus();
+                }
+            })
+            const newTodoBtn = document.querySelector("#data-new-list-btn");
+            const todoInput = document.querySelector("#data-new-list-input");
+            const delBtm = document.querySelectorAll(".del-btn");
+            const container = document.querySelector("#task");
+            newTodoBtn.addEventListener("click",evt => {
+                evt.preventDefault();
+                const newLi = document.createElement("li");
+                newLi.classList.add("listed-tasks");
+                newLi.style.display = "none";
+                const newCheckBox = document.createElement("input");
+                newCheckBox.type="checkbox";
+                newCheckBox.classList.add("check-box");
+                newLi.appendChild(newCheckBox);
+                const newSpan = document.createElement("span");
+                newSpan.innerText = " " + todoInput.value + " ";
+                newLi.appendChild(newSpan);
+                const newBtn = document.createElement("button");
+                newBtn.classList.add("btn-xs");
+                newBtn.classList.add("del-btn");
+                newBtn.style.fontSize = "8px";
+                newBtn.style.color = "red";
+                const newDel = document.createElement("i");
+                newDel.classList.add("fa");
+                newDel.classList.add("fa-close");
+                newBtn.appendChild(newDel);
+                newLi.appendChild(newBtn);
+                console.log(newLi);
+                document.getElementById("task").appendChild(newLi);
+                $(".listed-tasks").fadeIn("slow");
+                todoInput.value = "";
+
+                // $("#data-new-list-input").value.fadeOut("slow");
+                // $(".listed-tasks").fadeIn(3000);
+            });
+            container.addEventListener("click", evt => {
+                const item = evt.target;
+                console.log(item.className);
+                if (item.className === "btn-xs del-btn") {
+                    const todo = item.parentElement;
+                    todo.remove();
+                }
+                if (item.className === "fa fa-close") {
+                    const todo = item.parentElement.parentElement;
+                    todo.remove();
+                }
+            });
+        }
+
+        setTimeout(window.close,60000)
+    </script>
+    <script>
+        $(document).ready(function() {
+            var trigger = $('.hamburger'),
+                overlay = $('.overlay'),
+                isClosed = false;
+            trigger.click(function() {
+                hamburger_cross();
+            });
+            function hamburger_cross() {
+                if (isClosed == true) {
+                    overlay.hide();
+                    trigger.removeClass('is-open');
+                    trigger.addClass('is-closed');
+                    isClosed = false;
+                } else {
+                    overlay.show();
+                    trigger.removeClass('is-closed');
+                    trigger.addClass('is-open');
+                    isClosed = true;
+                }
+            }
+            $('[data-toggle="offcanvas"]').click(function() {
+                $('#wrapper').toggleClass('toggled');
+            });
+        });
+    </script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-9" style="background-color: #FFF587">
+            <h1 class="h1">To do</h1>
+        </div>
+        <div class="col-md-3" style="background-color: #FF8C64">
+            <nav class="navbar navbar-default navbar-toggler" role="navigation" style="background-color: #FF8C64;border: #FF8C64;
+        margin: 10px 10px 10px 10px" >
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">Nav</a>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li><a href="#">Set</a></li>
+                            <li><a href="#">Help</a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    Sign in
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">My profile</a></li>
+                                    <li><a th:href="admin">Sign in</a></li>
+                                    <li><a th:href="logout">Sign out</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">分离的链接</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">另一个分离的链接</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-9" style="background-color: #A3A1A8;height: 90vh">
+            <div class="column leftSide">
+                <h2>Tasks</h2>
+                <input type="text" placeholder="Add your task here" id="data-new-list-input" style="border: 0 none;outline: none;border-bottom: 1px solid mediumpurple;" >
+                <button class="btn" style="background-color:mediumpurple;color: white" id="data-new-list-btn">ADD TASKS</button>
+                <ul id="task" >
+                </ul>
+            </div>
+        </div>
+        <div class="col-md-3" style="background-color: #FF665A;height: 90vh;padding-top: 2vh">
+            <nav class="navbar navbar-inverse navbar-fixed-right" id="sidebar-wrapper"
+                 role="navigation" style="background-color: #FF8C64" >
+                <ul class="nav sidebar-nav">
+                    <li class="sidebar-brand"> <a href="#"> Menu </a> </li>
+                    <li> <a href="#"> <i class="fa fa-fw fa-home"> </i> Home </a> </li>
+                    <li> <a href="#"> <i class="fa fa-fw fa-folder"> </i> Things </a> </li>
+                    <li> <a href="#"> <i class="fa fa-fw fa-file-o"> </i> Important </a> </li>
+                    <li> <a href="#"> <i class="fa fa-fw fa-cog"> </i> Calender </a> </li>
+                    <!--                <li class="dropdown"> <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <i class="fa fa-fw fa-plus"> </i> Dropdown <span class="caret"> </span> </a>-->
+                    <!--                    <ul class="dropdown-menu" role="menu">-->
+                    <!--                        <li class="dropdown-header"> Dropdown heading </li>-->
+                    <!--                        <li> <a href="#"> Action </a> </li>-->
+                    <!--                        <li> <a href="#"> Another action </a> </li>-->
+                    <!--                        <li> <a href="#"> Something else here </a> </li>-->
+                    <!--                        <li> <a href="#"> Separated link </a> </li>-->
+                    <!--                        <li> <a href="#"> One more separated link </a> </li>-->
+                    <!--                    </ul>-->
+                    <!--                </li>-->
+                    <!--                <li> <a href="#"> <i class="fa fa-fw fa-bank"> </i> Page four </a> </li>-->
+                    <!--                <li> <a href="#"> <i class="fa fa-fw fa-dropbox"> </i> Page 5 </a> </li>-->
+                    <!--                <li> <a href="#"> <i class="fa fa-fw fa-twitter"> </i> Last page </a> </li>-->
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+</body>
+</html>

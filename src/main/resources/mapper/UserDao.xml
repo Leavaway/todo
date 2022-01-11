@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.todo.dao.UserDao">
+    <select id="checkLogin" resultType="User">
+        select * from todo.usrs
+        where UsrName = #{UsrName} and UsrPwd = #{UsrPwd};
+    </select>
+    <select id="checkUserName" resultType="User">
+        select UsrName from todo.usrs
+        where UsrName = #{UsrName};
+    </select>
+    <insert id="registerUser">
+        insert into todo.usrs
+        values (#{UsrId}, #{UsrName}, #{UsrPwd}, #{UsrEmail});
+    </insert>
+    <select id="checkUsrId" resultType="User">
+        select UsrId from todo.usrs
+        where UsrId = #{UsrId};
+    </select>
+</mapper>
+
