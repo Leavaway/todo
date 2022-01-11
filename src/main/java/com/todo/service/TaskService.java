@@ -2,6 +2,8 @@ package com.todo.service;
 
 import com.todo.pojo.Task;
 
+import java.util.List;
+
 public interface TaskService {
-    Task getTasks(int UserId);
+    List<Task> getTasks(int UserId);
 }

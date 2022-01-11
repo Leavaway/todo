@@ -3,7 +3,14 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.todo.dao.TaskDao">
-    <select id="getTask" resultType="Task">
+    <resultMap id="task" type="Task">
+        <id property="id" column="id"/>
+        <result property="TaskId" column="TaskId"></result>
+        <result property="UsrId" column="UsrId"></result>
+        <result property="Task" column="Task"></result>
+
+    </resultMap>
+    <select id="getTask" resultMap="task">
         select * from todo.task
         where UsrId = #{UsrId};
     </select>

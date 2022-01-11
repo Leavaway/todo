@@ -1,6 +1,7 @@
 package com.todo.controller;
 
 import com.todo.pojo.User;
+import com.todo.service.TaskService;
 import com.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,9 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TaskService taskService;
 
     @GetMapping()
     public String loginPage(HttpSession session){
@@ -52,6 +56,8 @@ public class LoginController {
             session.setAttribute("user", user);
             //验证成功登录，设置session的attr后再次获取sessionId
             System.out.println(session.getAttribute("user"));
+            user.setTasks(taskService.getTasks(1));
+            System.out.println(user.getTasks());
             return "todo";
         } else {
             attributes.addFlashAttribute("msg", "用户名或密码错误");

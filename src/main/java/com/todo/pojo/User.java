@@ -17,4 +17,5 @@ public class User implements Serializable{
     private String UsrName;
     private String UsrPwd;
     private String UsrEmail;
+    private List<Task> tasks;
 }

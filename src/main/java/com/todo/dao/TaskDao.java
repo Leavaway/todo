@@ -5,8 +5,11 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.util.List;
+
 @Mapper
 @Repository
 public interface TaskDao {
-    Task getTask(@Param("UsrId") int UsrId);
+    List<Task> getTask(@Param("UsrId") int UsrId);
 }
