@@ -17,12 +17,11 @@ public class TaskController {
     TaskService taskService;
 
     @PostMapping()
-    public void addNewTask(HttpServletRequest httpServletRequest, HttpSession httpSession){
-        System.out.println("add new task");
+    public String addNewTask(HttpServletRequest httpServletRequest, HttpSession httpSession){
         String taskContent = httpServletRequest.getParameter("taskContent");
         User user = (User) httpSession.getAttribute("user");
         int UsrId = user.getUsrId();
-        System.out.println(UsrId);
         taskService.newTask(UsrId, taskContent);
+        return "redirect:/";
     }
 }

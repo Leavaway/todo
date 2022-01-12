@@ -51,10 +51,10 @@
                     console.log(newLi);
                     document.getElementById("task").appendChild(newLi);
                     $(".listed-tasks").fadeIn("slow");
-                    todoInput.value = "";
                     $.post("",{
-
+                        taskContent:todoInput.value
                     })
+                    todoInput.value = "";
                 }
                 // $("#data-new-list-input").value.fadeOut("slow");
                 // $(".listed-tasks").fadeIn(3000);
