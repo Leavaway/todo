@@ -58,11 +58,14 @@ public class LoginController {
             System.out.println(session.getAttribute("user"));
             user.setTasks(taskService.getTasks(1));
             System.out.println(user.getTasks());
-            return "todo";
+            System.out.println("here");
+            return "redirect:/";
         } else {
             attributes.addFlashAttribute("msg", "用户名或密码错误");
-            return "redirect:/admin";
+//            return "redirect:/admin";
+            return "todo";
         }
+
     }
     @GetMapping("register")
     public String register(){

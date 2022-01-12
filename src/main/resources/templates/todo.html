@@ -27,31 +27,35 @@
             const container = document.querySelector("#task");
             newTodoBtn.addEventListener("click",evt => {
                 evt.preventDefault();
-                const newLi = document.createElement("li");
-                newLi.classList.add("listed-tasks");
-                newLi.style.display = "none";
-                const newCheckBox = document.createElement("input");
-                newCheckBox.type="checkbox";
-                newCheckBox.classList.add("check-box");
-                newLi.appendChild(newCheckBox);
-                const newSpan = document.createElement("span");
-                newSpan.innerText = " " + todoInput.value + " ";
-                newLi.appendChild(newSpan);
-                const newBtn = document.createElement("button");
-                newBtn.classList.add("btn-xs");
-                newBtn.classList.add("del-btn");
-                newBtn.style.fontSize = "8px";
-                newBtn.style.color = "red";
-                const newDel = document.createElement("i");
-                newDel.classList.add("fa");
-                newDel.classList.add("fa-close");
-                newBtn.appendChild(newDel);
-                newLi.appendChild(newBtn);
-                console.log(newLi);
-                document.getElementById("task").appendChild(newLi);
-                $(".listed-tasks").fadeIn("slow");
-                todoInput.value = "";
+                if(todoInput.value){
+                    const newLi = document.createElement("li");
+                    newLi.classList.add("listed-tasks");
+                    newLi.style.display = "none";
+                    const newCheckBox = document.createElement("input");
+                    newCheckBox.type="checkbox";
+                    newCheckBox.classList.add("check-box");
+                    newLi.appendChild(newCheckBox);
+                    const newSpan = document.createElement("span");
+                    newSpan.innerText = " " + todoInput.value + " ";
+                    newLi.appendChild(newSpan);
+                    const newBtn = document.createElement("button");
+                    newBtn.classList.add("btn-xs");
+                    newBtn.classList.add("del-btn");
+                    newBtn.style.fontSize = "8px";
+                    newBtn.style.color = "red";
+                    const newDel = document.createElement("i");
+                    newDel.classList.add("fa");
+                    newDel.classList.add("fa-close");
+                    newBtn.appendChild(newDel);
+                    newLi.appendChild(newBtn);
+                    console.log(newLi);
+                    document.getElementById("task").appendChild(newLi);
+                    $(".listed-tasks").fadeIn("slow");
+                    todoInput.value = "";
+                    $.post("",{
 
+                    })
+                }
                 // $("#data-new-list-input").value.fadeOut("slow");
                 // $(".listed-tasks").fadeIn(3000);
             });

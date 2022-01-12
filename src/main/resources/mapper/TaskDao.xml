@@ -3,16 +3,28 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.todo.dao.TaskDao">
-    <resultMap id="task" type="Task">
-        <id property="id" column="id"/>
-        <result property="TaskId" column="TaskId"></result>
-        <result property="UsrId" column="UsrId"></result>
-        <result property="Task" column="Task"></result>
+<!--    <resultMap id="task" type="Task">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="TaskId" column="TaskId"></result>-->
+<!--        <result property="UsrId" column="UsrId"></result>-->
+<!--        <result property="Task" column="Task"></result>-->
 
-    </resultMap>
-    <select id="getTask" resultMap="task">
+<!--    </resultMap>-->
+    <select id="getTask" resultType="Task">
         select * from todo.task
         where UsrId = #{UsrId};
     </select>
+    <select id="getTaskId" resultType="int">
+        select Max(TaskId) from todo.task where UsrId = #{UsrId};
+    </select>
+    <insert id="addNewTask">
+        insert into todo.task
+        values (#{TaskId},#{UsrId},#{Task});
+    </insert>
+    <update id="updateTask">
+        update todo.task
+        set Task = #{Task}
+        where UsrId = #{UsrId};
+    </update>
 </mapper>
 
