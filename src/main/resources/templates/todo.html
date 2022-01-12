@@ -15,41 +15,73 @@
 
     </style>
     <script>
-        window.onload = function myt() {
-            let http = require("http");
-            let fs = require("fs");
-            let server = http.createServer(function (request, response) {
-                console.log("response!");
-                response.writeHead(200, { "Content-type": "text/html" })
-                let stream = fs.createReadStream(__dirname + "/todo.html", "utf-8");
-                stream.pipe(response);
-            });
-
-            server.listen(8080, "127.0.0.1");
-
-            server.on("error", function (e) {
-
-                if (e.code == "EADDRINUSE") {
-                    console.log("in error")
-                    setTimeout(function () {
-                        server.close();
-                        server.listen(8080, "127.0.0.1")
-                    }, 1000);
-                }
-            })
-        }
-
-
         window.onload = function myf() {
+            if(document.cookie==null||document.cookie==""){
+                $.get("",{
+
+                });
+            }
+            const newTodoBtn = document.querySelector("#data-new-list-btn");
+            const todoInput = document.querySelector("#data-new-list-input");
+            const delBtm = document.querySelectorAll(".del-btn");
+            const container = document.querySelector("#task");
+            function decodeUtf8(bytes) {
+                var encoded = "";
+                for (var i = 0; i < bytes.length; i++) {
+                    encoded += '%' + bytes[i].toString(16);
+                }
+                return decodeURIComponent(encoded);
+            }
+            let x = decodeURIComponent(document.cookie.split("=")[1]);
+            console.log(x);
+            var y = x.split("}");
+            y.pop();
+            for(var i=0; i<y.length; i++) {
+                y[i]+="}";
+                y[i] = JSON.parse(y[i]);
+                console.log(y[i]["content"]);
+                if (y[i]["content"] != null && y[i]["content"]!= ""){
+                    const newLi = document.createElement("li");
+                    newLi.classList.add("listed-tasks");
+                    newLi.style.display = "none";
+                    const newCheckBox = document.createElement("input");
+                    newCheckBox.type="checkbox";
+                    newCheckBox.classList.add("check-box");
+                    newLi.appendChild(newCheckBox);
+                    const newSpan = document.createElement("span");
+                    newSpan.innerText = " " + y[i]["content"] + " ";
+                    newLi.appendChild(newSpan);
+                    const newBtn = document.createElement("button");
+                    newBtn.classList.add("btn-xs");
+                    newBtn.classList.add("del-btn");
+                    newBtn.style.fontSize = "8px";
+                    newBtn.style.color = "red";
+                    const newDel = document.createElement("i");
+                    newDel.classList.add("fa");
+                    newDel.classList.add("fa-close");
+                    newBtn.appendChild(newDel);
+                    newLi.appendChild(newBtn);
+                    console.log(newLi);
+                    document.getElementById("task").appendChild(newLi);
+                    $(".listed-tasks").fadeIn("slow");
+                }
+            }
+            console.log(y);
+            console.log("--");
+            let xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange=function()
+            {
+                if (xmlhttp.readyState==4 && xmlhttp.status==200)
+                {
+                    document.getElementById("data-new-list-input").innerHTML=xmlhttp.responseText;
+                }
+            }
             document.addEventListener("keyup", e => {
                 if(e.code === "Slash") {
                     todoInput.focus();
                 }
             })
-            const newTodoBtn = document.querySelector("#data-new-list-btn");
-            const todoInput = document.querySelector("#data-new-list-input");
-            const delBtm = document.querySelectorAll(".del-btn");
-            const container = document.querySelector("#task");
+
             newTodoBtn.addEventListener("click",evt => {
                 evt.preventDefault();
                 if(todoInput.value){

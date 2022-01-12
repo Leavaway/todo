@@ -1,6 +1,7 @@
 package com.todo.controller;
 
 import com.sun.deploy.net.HttpResponse;
+import com.todo.pojo.Task;
 import com.todo.pojo.User;
 import com.todo.service.TaskService;
 import com.todo.service.UserService;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -37,41 +39,32 @@ public class LoginController {
 //        return "admin/login";
         return "login";
     }
-
-//    @GetMapping("login")
-//    public String login(HttpSession session){
-//        if (session.getAttribute("user")!=null) {
-//            return "admin/index";
-//        } else {
-//            return "redirect:/admin";
-//        }
+//    @RequestMapping()
+//    public void loginReturn(@RequestParam(value = "task*") String task){
+//
 //    }
+
     @PostMapping("login")
-    public void login(HttpServletRequest httpServletRequest,
+    public String login(HttpServletRequest httpServletRequest,
                         HttpSession session,
-                        RedirectAttributes attributes,
-                      HttpServletResponse httpServletResponse) throws IOException {
+                        RedirectAttributes attributes) throws IOException {
         String username = httpServletRequest.getParameter("UsrName");
         String password = httpServletRequest.getParameter("UsrPwd");
-        //访问时的sessionId
-        System.out.println(session.getId());
         //验证用户名和密码
         User user1 = userService.checkUserName(username);
-//        if(user1==null){
-//            return "404";
-//        }
+        if(user1==null){
+            return "404";
+        }
         User user = userService.checkUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
             //验证成功登录，设置session的attr后再次获取sessionId
             user.setTasks(taskService.getTasks(user.getUsrId()));
-            httpServletResponse.sendRedirect("/");
-            httpServletResponse.setContentType("text/html;charset=utf-8");
-            ServletOutputStream out = httpServletResponse.getOutputStream();
-            out.write("<h2>Hello</h2>".getBytes());
+//            attributes.addAttribute("UsrId",user.getUsrId());
+            return "redirect:/";
         } else {
             attributes.addFlashAttribute("msg", "用户名或密码错误");
-            httpServletResponse.sendRedirect("404");
+            return "404";
         }
 
     }
