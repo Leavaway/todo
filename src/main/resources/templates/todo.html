@@ -18,6 +18,7 @@
     </style>
     <script>
         window.onload = function myf() {
+            $("#sidebar").hide();
             if(document.cookie==null||document.cookie==""){
                 $.get("",{
 
@@ -157,7 +158,6 @@
             });
             container.addEventListener("click", evt => {
                 const item = evt.target;
-                console.log(item.className);
                 if (item.className === "btn-xs del-btn") {
                     const todo = item.parentElement;
                     todo.remove();
@@ -167,9 +167,12 @@
                     todo.remove();
                 }
             });
+            $(".listed-tasks").on("click","span",function () {
+                $("#sidebar").toggle();
+            })
+
         }
 
-        setTimeout(window.close,60000)
     </script>
     <script>
         $(document).ready(function() {
@@ -238,13 +241,18 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-9" style="background-color: #A3A1A8;height: 90vh">
-            <div class="column leftSide">
+        <div class="col-md-9" style="padding:0 0 0 0;background-color: #A3A1A8;height: 90vh">
+            <div class="col-md-9 column leftSide">
                 <h2>Tasks</h2>
                 <input type="text" placeholder="Add your task here" id="data-new-list-input" style="border: 0 none;outline: none;border-bottom: 1px solid mediumpurple;" >
                 <button class="btn" style="background-color:mediumpurple;color: white" id="data-new-list-btn">ADD TASKS</button>
                 <ul id="task" >
                 </ul>
+            </div>
+            <div class="col-md-3" style="margin-right:0; float:right;background-color: #F5F5F5;height: 90vh" id="sidebar">
+                <div style="border: solid #EAEAEA;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF">
+                    <h1 class="h1" style="font-size: 28px;padding-left: 2vh;padding-bottom: 1vh" > <i class="fa fa-circle-o" style="color:mediumpurple;font-size:30px"></i> Test</h1>
+                </div>
             </div>
         </div>
         <div class="col-md-3" style="background-color: #FF665A;height: 90vh;padding-top: 2vh">
