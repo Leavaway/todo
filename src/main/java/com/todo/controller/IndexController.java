@@ -35,8 +35,8 @@ public class IndexController {
             return "todo";
         }
     }
-//    @GetMapping()
-//    public String loadTasks(@RequestParam(value = "UsrId") String UsrId, HttpSession httpSession){
-//        return "404";
-//    }
+    @GetMapping("help")
+    public String getHelp(){
+        return "help";
+    }
 }
