@@ -12,7 +12,9 @@
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
+        #sidebar-wrapper{
 
+        }
     </style>
     <script>
         window.onload = function myf() {
@@ -82,9 +84,45 @@
                 }
             })
 
+            $("input").keypress(function(){
+                if (event.keyCode=="13"){
+                    if(todoInput.value&&todoInput.value!= " "&&todoInput.value!= "  "&&todoInput.value!= "   "&&todoInput.value!= "    "
+                        &&todoInput.value!= "     "&&todoInput.value!= "      "&&todoInput.value!= "       "){
+                        const newLi = document.createElement("li");
+                        newLi.classList.add("listed-tasks");
+                        newLi.style.display = "none";
+                        const newCheckBox = document.createElement("input");
+                        newCheckBox.type="checkbox";
+                        newCheckBox.classList.add("check-box");
+                        newLi.appendChild(newCheckBox);
+                        const newSpan = document.createElement("span");
+                        newSpan.innerText = " " + todoInput.value + " ";
+                        newLi.appendChild(newSpan);
+                        const newBtn = document.createElement("button");
+                        newBtn.classList.add("btn-xs");
+                        newBtn.classList.add("del-btn");
+                        newBtn.style.fontSize = "8px";
+                        newBtn.style.color = "red";
+                        const newDel = document.createElement("i");
+                        newDel.classList.add("fa");
+                        newDel.classList.add("fa-close");
+                        newBtn.appendChild(newDel);
+                        newLi.appendChild(newBtn);
+                        console.log(newLi);
+                        document.getElementById("task").appendChild(newLi);
+                        $(".listed-tasks").fadeIn("slow");
+                        $.post("",{
+                            taskContent:todoInput.value
+                        })
+                        todoInput.value = "";
+                    }
+                }
+            });
+
             newTodoBtn.addEventListener("click",evt => {
                 evt.preventDefault();
-                if(todoInput.value){
+                if(todoInput.value&&todoInput.value!= " "&&todoInput.value!= "  "&&todoInput.value!= "   "&&todoInput.value!= "    "
+                    &&todoInput.value!= "     "&&todoInput.value!= "      "&&todoInput.value!= "       "){
                     const newLi = document.createElement("li");
                     newLi.classList.add("listed-tasks");
                     newLi.style.display = "none";
@@ -112,6 +150,7 @@
                         taskContent:todoInput.value
                     })
                     todoInput.value = "";
+                    todoInput.focus();
                 }
                 // $("#data-new-list-input").value.fadeOut("slow");
                 // $(".listed-tasks").fadeIn(3000);
@@ -158,6 +197,7 @@
             });
         });
     </script>
+
 </head>
 <body>
 <div class="container-fluid">
@@ -231,6 +271,8 @@
                     <!--                <li> <a href="#"> <i class="fa fa-fw fa-twitter"> </i> Last page </a> </li>-->
                 </ul>
             </nav>
+
+
         </div>
     </div>
 </div>
