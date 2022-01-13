@@ -184,6 +184,22 @@
                     todo.remove();
                 }
             });
+            $(".listed-tasks").click(function () {
+                $("#sidebar").show();
+                $("#sidebar-text").text(this.innerText);
+            });
+            $(".listed-tasks").dblclick(function () {
+                $("#sidebar").hide();
+            });
+            $("#is-important").click(function () {
+                console.log("click it");
+                if ($("#is-important").attr("class")=="fa fa-heart-o"){
+                    $("#is-important").attr("class","fa fa-heart");
+                }else {
+                    $("#is-important").attr("class","fa fa-heart-o");
+                }
+
+            });
 
 
         }

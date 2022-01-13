@@ -19,12 +19,17 @@
     </select>
     <insert id="addNewTask">
         insert into todo.task
-        values (#{TaskId},#{UsrId},#{Task});
+        values (#{TaskId},#{UsrId},#{IsImportant},#{IsComplete},#{IsDaily},#{AlertTime},#{Task});
     </insert>
     <update id="updateTask">
         update todo.task
         set Task = #{Task}
         where UsrId = #{UsrId};
+    </update>
+    <update id="isImportantTask">
+        update todo.task
+        set IsImportant = #{IsImportant};
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
     </update>
 </mapper>
 

@@ -32,15 +32,33 @@ public class TaskServiceImpl implements TaskService {
         taskContent.setContent(string);
         taskContent.setCreateTime(new Date());
         Task task = new Task();
-        task.setTaskId(taskDao.getTaskId(UserId)+1);
-        task.setUsrId(UserId);
-        JSONObject jsonObject = JavaToJSON.javaToJSON(taskContent);
-        task.setTask(jsonObject.toJSONString());
-        taskDao.addNewTask(taskDao.getTaskId(UserId)+1, UserId, jsonObject.toJSONString());
+        List<Task> task1 = taskDao.getTask(UserId);
+        if(task1.size()==0){
+            task.setTaskId(1);
+            task.setUsrId(UserId);
+            JSONObject jsonObject = JavaToJSON.javaToJSON(taskContent);
+            task.setTask(jsonObject.toJSONString());
+            taskDao.addNewTask(1, UserId, 0,0,0,null,jsonObject.toJSONString());
+        }else {
+            task.setTaskId(taskDao.getTaskId(UserId)+1);
+            task.setUsrId(UserId);
+            JSONObject jsonObject = JavaToJSON.javaToJSON(taskContent);
+            task.setTask(jsonObject.toJSONString());
+            taskDao.addNewTask(taskDao.getTaskId(UserId)+1, UserId, 0,0,0,null,jsonObject.toJSONString());
+        }
     }
 
     @Override
     public int getTaskId(int UserId) {
         return taskDao.getTaskId(UserId);
+    }
+
+    @Override
+    public void IsImportant(int UserId, int TaskId, int IsImportant) {
+        if (IsImportant==0){
+            taskDao.isImportantTask(UserId,TaskId,1);
+        }else {
+            taskDao.isImportantTask(UserId,TaskId,0);
+        }
     }
 }

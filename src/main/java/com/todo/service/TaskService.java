@@ -8,4 +8,5 @@ public interface TaskService {
     List<Task> getTasks(int UserId);
     void newTask(int UserId, String string);
     int getTaskId(int UserId);
+    void IsImportant(int UserId, int TaskId, int IsImportant);
 }

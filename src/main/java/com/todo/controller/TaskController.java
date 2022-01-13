@@ -19,9 +19,18 @@ public class TaskController {
     @PostMapping()
     public String addNewTask(HttpServletRequest httpServletRequest, HttpSession httpSession){
         String taskContent = httpServletRequest.getParameter("taskContent");
-        User user = (User) httpSession.getAttribute("user");
-        int UsrId = user.getUsrId();
-        taskService.newTask(UsrId, taskContent);
+        String isImportant =httpServletRequest.getParameter("isImportant");
+        String TaskId =httpServletRequest.getParameter("isImportant");
+        if (taskContent!=null){
+            User user = (User) httpSession.getAttribute("user");
+            int UsrId = user.getUsrId();
+            taskService.newTask(UsrId, taskContent);
+            return "redirect:/";
+        }else if (isImportant!=null&&TaskId!=null){
+            User user = (User) httpSession.getAttribute("user");
+            taskService.IsImportant(user.getUsrId(),Integer.parseInt(TaskId),Integer.parseInt(isImportant));
+            return "redirect:/";
+        }
         return "redirect:/";
     }
 }
