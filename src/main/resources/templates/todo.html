@@ -132,6 +132,7 @@
                     newCheckBox.classList.add("check-box");
                     newLi.appendChild(newCheckBox);
                     const newSpan = document.createElement("span");
+                    newSpan.classList.add("text");
                     newSpan.innerText = " " + todoInput.value + " ";
                     newLi.appendChild(newSpan);
                     const newBtn = document.createElement("button");
@@ -152,6 +153,22 @@
                     })
                     todoInput.value = "";
                     todoInput.focus();
+                    $(".text").click(function () {
+                        $("#sidebar").show();
+                        $("#sidebar-text").text(this.innerText);
+                    });
+                    $(".text").dblclick(function () {
+                        $("#sidebar").hide();
+                    });
+                    $("#is-important").click(function () {
+                        console.log("click it");
+                        if ($("#is-important").attr("class")=="fa fa-heart-o"){
+                            $("#is-important").attr("class","fa fa-heart");
+                        }else {
+                            $("#is-important").attr("class","fa fa-heart-o");
+                        }
+
+                    });
                 }
                 // $("#data-new-list-input").value.fadeOut("slow");
                 // $(".listed-tasks").fadeIn(3000);
@@ -167,9 +184,7 @@
                     todo.remove();
                 }
             });
-            $(".listed-tasks").on("click","span",function () {
-                $("#sidebar").toggle();
-            })
+
 
         }
 
@@ -250,8 +265,10 @@
                 </ul>
             </div>
             <div class="col-md-3" style="margin-right:0; float:right;background-color: #F5F5F5;height: 90vh" id="sidebar">
-                <div style="border: solid #EAEAEA;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF">
-                    <h1 class="h1" style="font-size: 28px;padding-left: 2vh;padding-bottom: 1vh" > <i class="fa fa-circle-o" style="color:mediumpurple;font-size:30px"></i> Test</h1>
+                <div style="border: solid #EAEAEA;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" id="task-content">
+                    <p style="font-size: 28px;padding-left: 2vh;padding-bottom: 1vh" > <i class="fa fa-heart-o" style="color:mediumpurple;font-size:30px" id="is-important"></i><span id="sidebar-text">Test</span>
+
+                    </p>
                 </div>
             </div>
         </div>
