@@ -149,7 +149,9 @@
                     document.getElementById("task").appendChild(newLi);
                     $(".listed-tasks").fadeIn("slow");
                     $.post("",{
-                        taskContent:todoInput.value
+                        taskContent:todoInput.value,
+                        isImportant:null,
+                        TaskId:null
                     })
                     todoInput.value = "";
                     todoInput.focus();
