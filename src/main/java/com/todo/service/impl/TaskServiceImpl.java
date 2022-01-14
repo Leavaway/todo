@@ -1,19 +1,11 @@
 package com.todo.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.todo.dao.TaskDao;
 import com.todo.pojo.Task;
-import com.todo.pojo.TaskContent;
 import com.todo.service.TaskService;
-import com.todo.util.JavaToJSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.xml.crypto.Data;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -28,23 +20,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void newTask(int UserId, String string) {
-        TaskContent taskContent = new TaskContent();
-        taskContent.setContent(string);
-        taskContent.setCreateTime(new Date());
         Task task = new Task();
         List<Task> task1 = taskDao.getTask(UserId);
         if(task1.size()==0){
             task.setTaskId(1);
             task.setUsrId(UserId);
-            JSONObject jsonObject = JavaToJSON.javaToJSON(taskContent);
-            task.setTask(jsonObject.toJSONString());
-            taskDao.addNewTask(1, UserId, 0,0,0,null,jsonObject.toJSONString());
+            task.setTask(string);
+            taskDao.addNewTask(1, UserId, 0,0,0,null,string);
         }else {
             task.setTaskId(taskDao.getTaskId(UserId)+1);
             task.setUsrId(UserId);
-            JSONObject jsonObject = JavaToJSON.javaToJSON(taskContent);
-            task.setTask(jsonObject.toJSONString());
-            taskDao.addNewTask(taskDao.getTaskId(UserId)+1, UserId, 0,0,0,null,jsonObject.toJSONString());
+            task.setTask(string);
+            taskDao.addNewTask(taskDao.getTaskId(UserId)+1, UserId, 0,0,0,null,string);
         }
     }
 
