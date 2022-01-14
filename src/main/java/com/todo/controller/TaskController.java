@@ -38,8 +38,6 @@ public class TaskController {
             taskService.IsImportant(user.getUsrId(),Integer.parseInt(TaskId),Integer.parseInt(isImportant));
             return "redirect:/";
         }
-//        Cookie cookie = new Cookie("TaskId", URLEncoder.encode(TaskId, "utf-8"));
-//        httpServletResponse.addCookie(cookie);
         return "redirect:/";
     }
 }

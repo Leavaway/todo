@@ -18,6 +18,38 @@
     </style>
     <script>
         window.onload = function myf() {
+            function sideBar() {
+                $(".text").click(function () {
+                    $("#sidebar").attr("taskId",$(".text").parent().attr("taskid"));
+                    $("#sidebar").attr("usrId",$(".text").parent().attr("usrid"));
+                    if($(".text").parent().attr("isimportant")=="0"){
+                        $("#is-important").attr("class","fa fa-heart-o");
+                    }else {
+                        $("#is-important").attr("class","fa fa-heart");
+                    }
+                    $("#sidebar").show();
+
+                    $("#sidebar-text").text(this.innerText);
+                });
+                $(".text").dblclick(function () {
+
+                    $("#sidebar").hide();
+                });
+                $("#is-important").click(function () {
+
+                    if ($("#is-important").attr("class")=="fa fa-heart-o"){
+                        console.log("click it1");
+                        $("#is-important").attr("class","fa fa-heart");
+                        const ss =$("#is-important").parent().parent().parent().attr("taskid");
+                        $("li [taskid="+ss+"]").attr("isimportant","1");
+                    }else {
+                        console.log("click it2");
+                        $("#is-important").attr("class","fa fa-heart-o");
+                        const ss =$("#is-important").parent().parent().parent().attr("taskid");
+                        $("li [taskid="+ss+"]").attr("isimportant","0");
+                    }
+                });
+            }
             $("#sidebar").hide();
             if(document.cookie==null||document.cookie==""){
                 $.get("",{
@@ -156,22 +188,7 @@
                         });
                         todoInput.value = "";
                         todoInput.focus();
-                        $(".text").click(function () {
-                            $("#sidebar").show();
-                            $("#sidebar-text").text(this.innerText);
-                        });
-                        $(".text").dblclick(function () {
-                            $("#sidebar").hide();
-                        });
-                        $("#is-important").click(function () {
-                            console.log("click it");
-                            if ($("#is-important").attr("class") == "fa fa-heart-o") {
-                                $("#is-important").attr("class", "fa fa-heart");
-                            } else {
-                                $("#is-important").attr("class", "fa fa-heart-o");
-                            }
-
-                        });
+                        sideBar();
                     }
                 };
                     // $("#data-new-list-input").value.fadeOut("slow");
@@ -345,22 +362,7 @@
                     });
                     todoInput.value = "";
                     todoInput.focus();
-                    $(".text").click(function () {
-                        $("#sidebar").show();
-                        $("#sidebar-text").text(this.innerText);
-                    });
-                    $(".text").dblclick(function () {
-                        $("#sidebar").hide();
-                    });
-                    $("#is-important").click(function () {
-                        console.log("click it");
-                        if ($("#is-important").attr("class")=="fa fa-heart-o"){
-                            $("#is-important").attr("class","fa fa-heart");
-                        }else {
-                            $("#is-important").attr("class","fa fa-heart-o");
-                        }
-
-                    });
+                    sideBar();
                 }
                 // $("#data-new-list-input").value.fadeOut("slow");
                 // $(".listed-tasks").fadeIn(3000);
@@ -376,24 +378,7 @@
                     todo.remove();
                 }
             });
-            $(".text").click(function () {
-                $("#sidebar").show();
-                $("#sidebar-text").text(this.innerText);
-            });
-            $(".text").dblclick(function () {
-                $("#sidebar").hide();
-            });
-            $("#is-important").click(function () {
-                console.log("click it");
-                if ($("#is-important").attr("class")=="fa fa-heart-o"){
-                    $("#is-important").attr("class","fa fa-heart");
-                }else {
-                    $("#is-important").attr("class","fa fa-heart-o");
-                }
-
-            });
-
-
+            sideBar();
         }
 
     </script>

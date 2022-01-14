@@ -39,8 +39,6 @@ public class IndexController {
                 stringBuilder.append(jsonString);
                 stringBuilder.append("&");
             }
-            System.out.println("here");
-            System.out.println(stringBuilder.toString());
             Cookie cookie = new Cookie("Tasks", URLEncoder.encode(stringBuilder.toString(), "utf-8"));
             httpServletResponse.addCookie(cookie);
             return "todo";
