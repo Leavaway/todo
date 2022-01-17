@@ -109,7 +109,7 @@
                 // y[i]+="}";
                 y[i] = JSON.parse(y[i]);
                 console.log(y[i]["task"]);
-                if (y[i]["task"] != null && y[i]["task"]!= ""){
+                if (y[i]["task"] != null && y[i]["task"]!= ""&&y[i]["isComplete"]!= "1"){
                     const newLi = document.createElement("li");
                     newLi.setAttribute("isComplete",y[i]["isComplete"]);
                     newLi.setAttribute("isDaily",y[i]["isDaily"]);
@@ -212,6 +212,7 @@
                         todoInput.value = "";
                         todoInput.focus();
                         sideBar();
+                        checkBox();
                     }
                 };
             })
@@ -274,6 +275,7 @@
                     todoInput.value = "";
                     todoInput.focus();
                     sideBar();
+                    checkBox();
                 }
             });
             container.addEventListener("click", evt => {
@@ -302,6 +304,19 @@
                 }
             });
             sideBar();
+            function checkBox() {
+                $("input[type='checkbox']").click(function () {
+                    $.post("complete",{
+                        "usrid":$(this).parent().attr("usrid"),
+                        "taskid":$(this).parent().attr("taskid")
+                    });
+                    if($("#sidebar").attr("taskid")==$(this).parent().attr("taskid")&&$("#sidebar").attr("usrid")==$(this).parent().attr("usrid")){
+                        $("#sidebar").hide();
+                    }
+                    $(this).parent().remove();
+                });
+            }
+            checkBox();
         }
     </script>
     <script>
