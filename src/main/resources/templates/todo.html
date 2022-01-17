@@ -44,12 +44,14 @@
                     const ss =$("#is-important").parent().parent().parent().attr("taskid");
                     $("li[taskid="+ss+"]").attr("isimportant","1");
                     $("#is-important").parent().parent().parent().attr("isimportant","1");
+                    $("li[taskid="+ss+"]").attr("style","font-weight: bold");
                 }else {
                     console.log("click it2");
                     $("#is-important").attr("class","fa fa-heart-o");
                     const ss =$("#is-important").parent().parent().parent().attr("taskid");
                     $("li[taskid="+ss+"]").attr("isimportant","0");
                     $("#is-important").parent().parent().parent().attr("isimportant","0");
+                    $("li[taskid="+ss+"]").attr("style","font-weight: normal");
                 }
                 $.post("isImportant",{
                     "taskid": $("#is-important").parent().parent().parent().attr("taskid"),
@@ -100,6 +102,9 @@
                     const newSpan = document.createElement("span");
                     newSpan.classList.add("text");
                     newSpan.innerText = " " + y[i]["task"] + " ";
+                    if(y[i]["isImportant"]=="1"){
+                        newSpan.style.fontWeight = "bold";
+                    }
                     newLi.appendChild(newSpan);
                     const newBtn = document.createElement("button");
                     newBtn.classList.add("btn-xs");
