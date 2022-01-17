@@ -4,6 +4,7 @@ import com.todo.pojo.User;
 import com.todo.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -39,5 +40,9 @@ public class TaskController {
             return "redirect:/";
         }
         return "redirect:/";
+    }
+    @PostMapping("isImportant")
+    public void isImportant(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
+        taskService.IsImportant(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")),Integer.parseInt(httpServletRequest.getParameter("isImportant")));
     }
 }

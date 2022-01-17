@@ -42,10 +42,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void IsImportant(int UserId, int TaskId, int IsImportant) {
-        if (IsImportant==0){
-            taskDao.isImportantTask(UserId,TaskId,1);
-        }else {
-            taskDao.isImportantTask(UserId,TaskId,0);
-        }
+        System.out.println("iscall!!");
+        taskDao.isImportantTask(UserId,TaskId,IsImportant);
     }
 }

@@ -28,7 +28,7 @@
     </update>
     <update id="isImportantTask">
         update todo.task
-        set IsImportant = #{IsImportant};
+        set IsImportant = #{IsImportant}
         where UsrId = #{UsrId} and TaskId = #{TaskId};
     </update>
 </mapper>

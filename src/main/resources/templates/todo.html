@@ -20,9 +20,10 @@
         window.onload = function myf() {
             function sideBar() {
                 $(".text").click(function () {
-                    $("#sidebar").attr("taskId",$(".text").parent().attr("taskid"));
-                    $("#sidebar").attr("usrId",$(".text").parent().attr("usrid"));
-                    if($(".text").parent().attr("isimportant")=="0"){
+                    $("#sidebar").attr("taskid",$(this).parent().attr("taskid"));
+                    $("#sidebar").attr("usrid",$(this).parent().attr("usrid"));
+                    $("#sidebar").attr("isimportant",$(this).parent().attr("isimportant"));
+                    if($("#sidebar").attr("isimportant")==="0"){
                         $("#is-important").attr("class","fa fa-heart-o");
                     }else {
                         $("#is-important").attr("class","fa fa-heart");
@@ -34,22 +35,28 @@
                 $(".text").dblclick(function () {
 
                     $("#sidebar").hide();
-                });
-                $("#is-important").click(function () {
+                });}
+            $("#is-important").click(function () {
 
-                    if ($("#is-important").attr("class")=="fa fa-heart-o"){
-                        console.log("click it1");
-                        $("#is-important").attr("class","fa fa-heart");
-                        const ss =$("#is-important").parent().parent().parent().attr("taskid");
-                        $("li [taskid="+ss+"]").attr("isimportant","1");
-                    }else {
-                        console.log("click it2");
-                        $("#is-important").attr("class","fa fa-heart-o");
-                        const ss =$("#is-important").parent().parent().parent().attr("taskid");
-                        $("li [taskid="+ss+"]").attr("isimportant","0");
-                    }
-                });
-            }
+                if ($("#is-important").attr("class")=="fa fa-heart-o"){
+                    console.log("click it1");
+                    $("#is-important").attr("class","fa fa-heart");
+                    const ss =$("#is-important").parent().parent().parent().attr("taskid");
+                    $("li[taskid="+ss+"]").attr("isimportant","1");
+                    $("#is-important").parent().parent().parent().attr("isimportant","1");
+                }else {
+                    console.log("click it2");
+                    $("#is-important").attr("class","fa fa-heart-o");
+                    const ss =$("#is-important").parent().parent().parent().attr("taskid");
+                    $("li[taskid="+ss+"]").attr("isimportant","0");
+                    $("#is-important").parent().parent().parent().attr("isimportant","0");
+                }
+                $.post("isImportant",{
+                    "taskid": $("#is-important").parent().parent().parent().attr("taskid"),
+                    "usrid":$("#is-important").parent().parent().parent().attr("usrid"),
+                    "isImportant": $("#is-important").parent().parent().parent().attr("isimportant")
+                })
+            });
             $("#sidebar").hide();
             if(document.cookie==null||document.cookie==""){
                 $.get("",{
@@ -109,16 +116,6 @@
                     $(".listed-tasks").fadeIn("slow");
                 }
             }
-
-
-            // let xmlhttp = new XMLHttpRequest();
-            // xmlhttp.onreadystatechange=function()
-            // {
-            //     if (xmlhttp.readyState==4 && xmlhttp.status==200)
-            //     {
-            //         document.getElementById("data-new-list-input").innerHTML=xmlhttp.responseText;
-            //     }
-            // }
             document.addEventListener("keyup", e => {
                 if(e.code === "Slash") {
                     todoInput.focus();
@@ -191,110 +188,10 @@
                         sideBar();
                     }
                 };
-                    // $("#data-new-list-input").value.fadeOut("slow");
-                    // $(".listed-tasks").fadeIn(3000);
             })
-
-            // $("input").keypress(function(){
-            //     if (event.keyCode=="13"){
-            //         if(todoInput.value&&todoInput.value!= " "&&todoInput.value!= "  "&&todoInput.value!= "   "&&todoInput.value!= "    "
-            //             &&todoInput.value!= "     "&&todoInput.value!= "      "&&todoInput.value!= "       "){
-            //             const newLi = document.createElement("li");
-            //             newLi.classList.add("listed-tasks");
-            //             newLi.style.display = "none";
-            //             //在新建li标签后通过newTask get 获取taskId写入attr
-            //             var xmlhttp1;
-            //             if (window.XMLHttpRequest)
-            //             {
-            //                 //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-            //                 xmlhttp1=new XMLHttpRequest();
-            //             }
-            //             else
-            //             {
-            //                 // IE6, IE5 浏览器执行代码
-            //                 xmlhttp1=new ActiveXObject("Microsoft.XMLHTTP");
-            //             }
-            //             xmlhttp1.open("GET","/newTask",true);
-            //             xmlhttp1.send();
-            //             console.log("All headers are")
-            //             console.log(xmlhttp1.getAllResponseHeaders());
-            //             console.log(xmlhttp1.responseText);
-            //             xmlhttp1.onreadystatechange=function()
-            //             {
-            //                 console.log(xmlhttp.readyState);
-            //                 console.log(xmlhttp.status);
-            //                 if (xmlhttp1.readyState==4 && xmlhttp1.status==200)
-            //                 {
-            //                     newLi.setAttribute("isComplete","0");
-            //                     newLi.setAttribute("isDaily","0");
-            //                     newLi.setAttribute("isImportant","0");
-            //                     newLi.setAttribute("task",todoInput.value);
-            //                     newLi.setAttribute("taskId",xmlhttp.getResponseHeader("TaskId").toString());
-            //                     newLi.setAttribute("usrId",xmlhttp.getResponseHeader("UsrId").toString());
-            //                 }
-            //             }
-            //
-            //             const newCheckBox = document.createElement("input");
-            //             newCheckBox.type="checkbox";
-            //             newCheckBox.classList.add("check-box");
-            //             newLi.appendChild(newCheckBox);
-            //             const newSpan = document.createElement("span");
-            //             newSpan.innerText = " " + todoInput.value + " ";
-            //             newSpan.classList.add("text")
-            //             newLi.appendChild(newSpan);
-            //             const newBtn = document.createElement("button");
-            //             newBtn.classList.add("btn-xs");
-            //             newBtn.classList.add("del-btn");
-            //             newBtn.style.fontSize = "8px";
-            //             newBtn.style.color = "red";
-            //             const newDel = document.createElement("i");
-            //             newDel.classList.add("fa");
-            //             newDel.classList.add("fa-close");
-            //             newBtn.appendChild(newDel);
-            //             newLi.appendChild(newBtn);
-            //             console.log(newLi);
-            //             document.getElementById("task").appendChild(newLi);
-            //             $(".listed-tasks").fadeIn("slow");
-            //             $.post("",{
-            //                 taskContent:todoInput.value
-            //             })
-            //             let xmlhttp;
-            //             if (window.XMLHttpRequest)
-            //             {
-            //                 //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-            //                 xmlhttp=new XMLHttpRequest();
-            //             }
-            //             else
-            //             {
-            //                 // IE6, IE5 浏览器执行代码
-            //                 xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            //             }
-            //             xmlhttp.open("GET","/newTask",true);
-            //             xmlhttp.send();
-            //             todoInput.value = "";
-            //             $(".text").click(function () {
-            //                 $("#sidebar").show();
-            //                 $("#sidebar-text").text(this.innerText);
-            //             });
-            //             $(".text").dblclick(function () {
-            //                 $("#sidebar").hide();
-            //             });
-            //             $("#is-important").click(function () {
-            //                 console.log("click it");
-            //                 if ($("#is-important").attr("class")=="fa fa-heart-o"){
-            //                     $("#is-important").attr("class","fa fa-heart");
-            //                 }else {
-            //                     $("#is-important").attr("class","fa fa-heart-o");
-            //                 }
-            //
-            //             });
-            //         }
-            //     }
-            // });
 
             newTodoBtn.addEventListener("click",evt => {
                 let todoVal = todoInput.value;
-                evt.preventDefault();
                 if(todoInput.value&&todoInput.value!= " "&&todoInput.value!= "  "&&todoInput.value!= "   "&&todoInput.value!= "    "
                     &&todoInput.value!= "     "&&todoInput.value!= "      "&&todoInput.value!= "       "){
                     const newLi = document.createElement("li");
@@ -302,40 +199,29 @@
                     newLi.style.display = "none";
                     //在新建li标签后通过newTask get 获取taskId写入attr
                     var xmlhttp;
-                    if (window.XMLHttpRequest)
-                    {
+                    if (window.XMLHttpRequest) {
                         //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
-                        xmlhttp=new XMLHttpRequest();
-                    }
-                    else
-                    {
+                        xmlhttp = new XMLHttpRequest();
+                    } else {
                         // IE6, IE5 浏览器执行代码
-                        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+                        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
                     }
-                    xmlhttp.open("GET","/newTask",true);
+                    xmlhttp.open("GET", "/newTask", true);
                     xmlhttp.send();
-                    console.log("All headers are")
-                    console.log(xmlhttp.getAllResponseHeaders());
-                    console.log(xmlhttp.responseText);
-                    xmlhttp.onreadystatechange=function()
-                    {
-                        console.log(xmlhttp.readyState);
-                        console.log(xmlhttp.status);
-                        if (xmlhttp.readyState==4 && xmlhttp.status==200)
-                        {
-                            newLi.setAttribute("isComplete","0");
-                            newLi.setAttribute("isDaily","0");
-                            newLi.setAttribute("isImportant","0");
-                            console.warn(todoInput.value);
-                            newLi.setAttribute("task",todoVal);
+                    xmlhttp.onreadystatechange = function () {
+                        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                            newLi.setAttribute("isComplete", "0");
+                            newLi.setAttribute("isDaily", "0");
+                            newLi.setAttribute("isImportant", "0");
+                            newLi.setAttribute("task", todoVal);
                             todoVal = "";
-                            newLi.setAttribute("taskId",xmlhttp.getResponseHeader("TaskId").toString());
-                            newLi.setAttribute("usrId",xmlhttp.getResponseHeader("UsrId").toString());
+                            newLi.setAttribute("taskId", xmlhttp.getResponseHeader("TaskId").toString());
+                            newLi.setAttribute("usrId", xmlhttp.getResponseHeader("UsrId").toString());
                         }
                     }
 
                     const newCheckBox = document.createElement("input");
-                    newCheckBox.type="checkbox";
+                    newCheckBox.type = "checkbox";
                     newCheckBox.classList.add("check-box");
                     newLi.appendChild(newCheckBox);
                     const newSpan = document.createElement("span");
@@ -352,20 +238,17 @@
                     newDel.classList.add("fa-close");
                     newBtn.appendChild(newDel);
                     newLi.appendChild(newBtn);
-                    console.log(newLi);
                     document.getElementById("task").appendChild(newLi);
                     $(".listed-tasks").fadeIn("slow");
-                    $.post("",{
-                        taskContent:todoInput.value,
-                        isImportant:null,
-                        TaskId:null
+                    $.post("", {
+                        taskContent: todoInput.value,
+                        isImportant: null,
+                        TaskId: null
                     });
                     todoInput.value = "";
                     todoInput.focus();
                     sideBar();
                 }
-                // $("#data-new-list-input").value.fadeOut("slow");
-                // $(".listed-tasks").fadeIn(3000);
             });
             container.addEventListener("click", evt => {
                 const item = evt.target;
@@ -380,7 +263,6 @@
             });
             sideBar();
         }
-
     </script>
     <script>
         $(document).ready(function() {
