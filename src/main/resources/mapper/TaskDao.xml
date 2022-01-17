@@ -31,5 +31,27 @@
         set IsImportant = #{IsImportant}
         where UsrId = #{UsrId} and TaskId = #{TaskId};
     </update>
+    <select id="getEmail" resultType="String">
+        select UsrEmail from todo.usrs
+        where UsrId = #{UsrId};
+    </select>
+    <update id="setAlert">
+        update todo.task
+        set AlertTime = #{AlertTime}
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <select id="getDailyTask" resultType="Task">
+        select * from todo.task
+        where UsrId = #{UsrId} and IsDaily = 1;
+    </select>
+    <update id="completeTask">
+        update todo.task
+        set IsComplete = 1
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <delete id="deleteTask">
+        delete from todo.task
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </delete>
 </mapper>
 

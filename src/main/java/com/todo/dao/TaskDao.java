@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -20,4 +21,10 @@ public interface TaskDao {
                     @Param("AlertTime") Date AlertTime, @Param("Task") String Task);
     void updateTask(@Param("UsrId") int UsrId, @Param("Task") String Task);
     void isImportantTask(@Param("UsrId") int UsrId,@Param("TaskId") int TaskId,@Param("IsImportant") int IsImportant);
+    String getEmail(@Param("UsrId") int UsrId);
+    void setAlert(@Param("UsrId") int UsrId,@Param("TaskId") int TaskId,@Param("AlertTime")
+            Timestamp AlertTime);
+    List<Task> getDailyTask(@Param("UsrId") int UsrId);
+    void deleteTask(@Param("UsrId") int UsrId,@Param("TaskId") int TaskId);
+    void completeTask(@Param("UsrId") int UsrId,@Param("TaskId") int TaskId);
 }

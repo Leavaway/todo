@@ -8,14 +8,29 @@
     <!--    <script src="bootstrap-5.1.3-dist/js/bootstrap.js"></script>-->
 
     <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
     <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <style>
-        #sidebar-wrapper{
-
-        }
-    </style>
+    <script src="https://cdn.bootcss.com/moment.js/2.24.0/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#datetimepicker2').datetimepicker({
+                format: 'YYYY-MM-DD hh:mm',
+                locale: moment.locale('zh-cn')
+            });
+            $("#setAlert").click(function () {
+                console.warn($("#dateText").val());
+                $.post("setAlert",{
+                    "taskid":$("#setAlert").parent().parent().parent().attr("taskid"),
+                    "usrid": $("#setAlert").parent().parent().parent().attr("usrid"),
+                    "alertTime":$("#dateText").val()
+                })
+            })
+        });
+    </script>
     <script>
         window.onload = function myf() {
             function sideBar() {
@@ -23,6 +38,8 @@
                     $("#sidebar").attr("taskid",$(this).parent().attr("taskid"));
                     $("#sidebar").attr("usrid",$(this).parent().attr("usrid"));
                     $("#sidebar").attr("isimportant",$(this).parent().attr("isimportant"));
+                    $("#sidebar").attr("isdaily",$(this).parent().attr("isdaily"));
+                    $("#sidebar").attr("alerttime",$(this).parent().attr("alerttime"));
                     if($("#sidebar").attr("isimportant")==="0"){
                         $("#is-important").attr("class","fa fa-heart-o");
                     }else {
@@ -59,6 +76,13 @@
                     "isImportant": $("#is-important").parent().parent().parent().attr("isimportant")
                 })
             });
+            $("#is-daily").click(function () {
+                if ($("#is-daily").attr("class")=="fa fa-calendar-minus-o"){
+                    $("#is-daily").attr("class","fa fa-calendar-check-o");
+                }else {
+                    $("#is-daily").attr("class","fa fa-calendar-minus-o");
+                }
+            });
             $("#sidebar").hide();
             if(document.cookie==null||document.cookie==""){
                 $.get("",{
@@ -93,6 +117,7 @@
                     newLi.setAttribute("task",y[i]["task"]);
                     newLi.setAttribute("taskId",y[i]["taskId"]);
                     newLi.setAttribute("usrId",y[i]["usrId"]);
+                    newLi.setAttribute("alertTime",y[i]["alertTime"]);
                     newLi.classList.add("listed-tasks");
                     newLi.style.display = "none";
                     const newCheckBox = document.createElement("input");
@@ -145,17 +170,13 @@
                         }
                         xmlhttp.open("GET", "/newTask", true);
                         xmlhttp.send();
-                        console.log("All headers are")
-                        console.log(xmlhttp.getAllResponseHeaders());
-                        console.log(xmlhttp.responseText);
                         xmlhttp.onreadystatechange = function () {
-                            console.log(xmlhttp.readyState);
-                            console.log(xmlhttp.status);
                             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                                 newLi.setAttribute("isComplete", "0");
                                 newLi.setAttribute("isDaily", "0");
                                 newLi.setAttribute("isImportant", "0");
                                 newLi.setAttribute("task", todoVal);
+                                newLi.setAttribute("alerttime",null);
                                 todoVal = "";
                                 newLi.setAttribute("taskId", xmlhttp.getResponseHeader("TaskId").toString());
                                 newLi.setAttribute("usrId", xmlhttp.getResponseHeader("UsrId").toString());
@@ -259,10 +280,24 @@
                 const item = evt.target;
                 if (item.className === "btn-xs del-btn") {
                     const todo = item.parentElement;
+                    $.post("delete",{
+                       "usrid":todo.getAttribute("usrid"),
+                        "taskid":todo.getAttribute("taskid")
+                    });
+                    if($("#sidebar").attr("taskid")==todo.getAttribute("taskid")&&$("#sidebar").attr("usrid")==todo.getAttribute("usrid")){
+                        $("#sidebar").hide();
+                    }
                     todo.remove();
                 }
                 if (item.className === "fa fa-close") {
                     const todo = item.parentElement.parentElement;
+                    $.post("delete",{
+                        "usrid":todo.getAttribute("usrid"),
+                        "taskid":todo.getAttribute("taskid")
+                    });
+                    if($("#sidebar").attr("taskid")==todo.getAttribute("taskid")&&$("#sidebar").attr("usrid")==todo.getAttribute("usrid")){
+                        $("#sidebar").hide();
+                    }
                     todo.remove();
                 }
             });
@@ -350,6 +385,23 @@
 
                     </p>
                 </div>
+                <div class="form-group" style="border: solid #EAEAEA;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" id="calender">
+                    <label>选择截止时间：</label>
+                    <div class='input-group date' id='datetimepicker2'>
+                        <input type='text' class="form-control" id="dateText"/>
+                        <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar" ></span>
+                </span>
+                        <button class="btn btn-default" style="margin-bottom: 24px" id="setAlert">提交</button>
+                </div>
+                </div>
+                <div style="border: solid #EAEAEA;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" >
+                    <p style="font-size: 20px;padding-left: 2vh;padding-bottom: 1vh" ><i class="fa fa-calendar-minus-o" style="color:mediumpurple;font-size:25px" id="is-daily"></i>
+                        设为每日事项
+                    </p>
+
+                </div>
+
             </div>
         </div>
         <div class="col-md-3" style="background-color: #FF665A;height: 90vh;padding-top: 2vh">

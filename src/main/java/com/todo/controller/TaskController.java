@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.ParseException;
 
 @Controller
 public class TaskController {
@@ -44,5 +45,18 @@ public class TaskController {
     @PostMapping("isImportant")
     public void isImportant(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
         taskService.IsImportant(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")),Integer.parseInt(httpServletRequest.getParameter("isImportant")));
+    }
+    @PostMapping("setAlert")
+    public void setAlert(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse) throws ParseException {
+        taskService.setAlert(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")),httpServletRequest.getParameter("alertTime"));
+
+    }
+    @PostMapping("delete")
+    public void delTask(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
+        taskService.delTask(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")));
+    }
+    @PostMapping("complete")
+    public void comTask(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
+        taskService.comTask(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")));
     }
 }
