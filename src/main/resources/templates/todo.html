@@ -41,7 +41,12 @@
     </script>
     <script>
         window.onload = function myf() {
+            let tasks = 1;
             function sideBar() {
+                if (tasks>=40){
+                    $("#just1").css("height", "auto");
+                    $("#sidebar").css("height", "auto");
+                }
                 $(".text").click(function () {
                     $("#sidebar").attr("taskid",$(this).parent().attr("taskid"));
                     $("#sidebar").attr("usrid",$(this).parent().attr("usrid"));
@@ -135,6 +140,7 @@
                 y[i] = JSON.parse(y[i]);
                 console.log(y[i]["task"]);
                 if (y[i]["task"] != null && y[i]["task"]!= ""&&y[i]["isComplete"]!= "1"){
+                    tasks+=1;
                     const newLi = document.createElement("li");
                     newLi.setAttribute("isComplete",y[i]["isComplete"]);
                     newLi.setAttribute("isDaily",y[i]["isDaily"]);
@@ -178,6 +184,7 @@
             })
             $("input").keypress(function () {
                 if (event.keyCode=="13") {
+                    tasks+=1;
                     let todoVal = todoInput.value;
                     if (todoInput.value && todoInput.value != " " && todoInput.value != "  " && todoInput.value != "   " && todoInput.value != "    "
                         && todoInput.value != "     " && todoInput.value != "      " && todoInput.value != "       ") {
@@ -243,6 +250,7 @@
             })
 
             newTodoBtn.addEventListener("click",evt => {
+                tasks+=1;
                 let todoVal = todoInput.value;
                 if(todoInput.value&&todoInput.value!= " "&&todoInput.value!= "  "&&todoInput.value!= "   "&&todoInput.value!= "    "
                     &&todoInput.value!= "     "&&todoInput.value!= "      "&&todoInput.value!= "       "){
@@ -411,7 +419,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-9" style="padding:0 0 0 0;background-color: #A3A1A8;height: 90vh">
+        <div class="col-md-9" style="padding:0 0 0 0;background-color: #A3A1A8;height: 90vh" id="just1">
             <div class="col-md-9 column leftSide">
                 <h2>Tasks</h2>
                 <input type="text" placeholder="Add your task here" id="data-new-list-input" style="border: 0 none;outline: none;border-bottom: 1px solid mediumpurple;" >
