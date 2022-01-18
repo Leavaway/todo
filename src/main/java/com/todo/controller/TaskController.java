@@ -59,4 +59,8 @@ public class TaskController {
     public void comTask(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
         taskService.comTask(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")));
     }
+    @PostMapping("checkAlert")
+    public void addAlert(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse) throws ParseException {
+        taskService.checkAlert();
+    }
 }

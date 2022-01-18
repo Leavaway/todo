@@ -14,4 +14,5 @@ public interface TaskService {
     void setAlert(int UserId, int TaskId,String date) throws ParseException;
     void delTask(int UserId, int TaskId);
     void comTask(int UserId, int TaskId);
+    void checkAlert() throws ParseException;
 }

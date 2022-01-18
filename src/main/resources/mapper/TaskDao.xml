@@ -14,6 +14,10 @@
         select * from todo.task
         where UsrId = #{UsrId};
     </select>
+    <select id="getTarTask" resultType="String">
+        select Task from todo.task
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </select>
     <select id="getTaskId" resultType="int">
         select Max(TaskId) from todo.task where UsrId = #{UsrId};
     </select>

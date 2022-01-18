@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public interface TaskDao {
     List<Task> getTask(@Param("UsrId") int UsrId);
+    String getTarTask(@Param("UsrId") int UsrId,@Param("TaskId") int TaskId);
     int getTaskId(@Param("UsrId") int UsrId);
     void addNewTask(@Param("TaskId") int TaskId, @Param("UsrId") int UsrId, @Param("IsImportant") int IsImportant,
                     @Param("IsComplete") int IsComplete, @Param("IsDaily") int IsDaily,

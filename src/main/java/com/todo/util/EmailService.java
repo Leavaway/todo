@@ -30,7 +30,7 @@ public class EmailService {
      * @throws Exception
      */
     public String sendMail(String user, String password, String host,
-                           String from, String to, String subject, String content,Date date)
+                           String from, String to, String subject, String content)
             throws Exception {
         if (to != null){
             Properties props = System.getProperties();

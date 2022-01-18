@@ -17,7 +17,8 @@
     <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#datetimepicker2').datetimepicker({
+            let picker1 = $('#datetimepicker2').datetimepicker({
+                time
                 format: 'YYYY-MM-DD hh:mm',
                 locale: moment.locale('zh-cn')
             });
@@ -29,6 +30,13 @@
                     "alertTime":$("#dateText").val()
                 })
             })
+            // picker1.on('dp.change', function (e) {
+            //     picker1.data('DateTimePicker').minDate(e.date);
+            // });
+            // //动态设置最大值
+            // picker1.on('dp.change', function (e) {
+            //     picker1.data('DateTimePicker').maxDate(e.date);
+            // });
         });
     </script>
     <script>
