@@ -53,6 +53,11 @@
                     }else {
                         $("#is-important").attr("class","fa fa-heart");
                     }
+                    if($("#sidebar").attr("isdaily")==="0"){
+                        $("#is-daily").attr("class","fa fa-calendar-minus-o");
+                    }else {
+                        $("#is-daily").attr("class","fa fa-calendar-check-o");
+                    }
                     $("#sidebar").show();
 
                     $("#sidebar-text").text(this.innerText);
@@ -64,14 +69,12 @@
             $("#is-important").click(function () {
 
                 if ($("#is-important").attr("class")=="fa fa-heart-o"){
-                    console.log("click it1");
                     $("#is-important").attr("class","fa fa-heart");
                     const ss =$("#is-important").parent().parent().parent().attr("taskid");
                     $("li[taskid="+ss+"]").attr("isimportant","1");
                     $("#is-important").parent().parent().parent().attr("isimportant","1");
                     $("li[taskid="+ss+"]").attr("style","font-weight: bold");
                 }else {
-                    console.log("click it2");
                     $("#is-important").attr("class","fa fa-heart-o");
                     const ss =$("#is-important").parent().parent().parent().attr("taskid");
                     $("li[taskid="+ss+"]").attr("isimportant","0");
@@ -87,8 +90,22 @@
             $("#is-daily").click(function () {
                 if ($("#is-daily").attr("class")=="fa fa-calendar-minus-o"){
                     $("#is-daily").attr("class","fa fa-calendar-check-o");
+                    const ss =$("#is-important").parent().parent().parent().attr("taskid");
+                    $("li[taskid="+ss+"]").attr("isdaily","1");
+                    $("#is-daily").parent().parent().parent().attr("isdaily","1");
+                    $.post("addDaily",{
+                        "taskid": $("#is-daily").parent().parent().parent().attr("taskid"),
+                        "usrid":$("#is-daily").parent().parent().parent().attr("usrid")
+                    })
                 }else {
                     $("#is-daily").attr("class","fa fa-calendar-minus-o");
+                    const ss =$("#is-important").parent().parent().parent().attr("taskid");
+                    $("li[taskid="+ss+"]").attr("isdaily","0");
+                    $("#is-daily").parent().parent().parent().attr("isdaily","0");
+                    $.post("delDaily",{
+                        "taskid": $("#is-daily").parent().parent().parent().attr("taskid"),
+                        "usrid":$("#is-daily").parent().parent().parent().attr("usrid")
+                    })
                 }
             });
             $("#sidebar").hide();

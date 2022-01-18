@@ -63,4 +63,16 @@ public class TaskController {
     public void addAlert(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse) throws ParseException {
         taskService.checkAlert();
     }
+    @PostMapping("addDaily")
+    public void addDaily(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
+        taskService.addDaily(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")));
+    }
+    @PostMapping("delDaily")
+    public void delDaily(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
+        taskService.delDaily(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")));
+    }
+    @PostMapping("checkDaily")
+    public void checkDaily(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
+        taskService.checkDaily();
+    }
 }

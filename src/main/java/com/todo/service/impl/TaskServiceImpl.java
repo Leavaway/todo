@@ -3,6 +3,7 @@ package com.todo.service.impl;
 import com.todo.dao.AlertDao;
 import com.todo.dao.TaskDao;
 import com.todo.pojo.Alert;
+import com.todo.pojo.DailyTask;
 import com.todo.pojo.Task;
 import com.todo.service.TaskService;
 import com.todo.util.EmailService;
@@ -98,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
                 //邮箱内容
                 StringBuffer sb = new StringBuffer();
                 sb.append("<!DOCTYPE>"+"<div bgcolor='#f1fcfa'   style='border:1px solid #d9f4ee; font-size:14px; line-height:22px; color:#005aa0;padding-left:1px;padding-top:5px;   padding-bottom:5px;'><span style='font-weight:bold;'>温馨提示：</span>"
-                        + "<div style='width:950px;font-family:arial;'>欢迎使用wedo，您设置的提醒时间为：<br/><h2 style='color:green'>"+alert.getAlert()+"</h2><br/>本邮件由系统自动发出，请勿回复。<br/>请注意您的安排，感谢您的使用。<br/>Wedo 运营组</div>"
+                        + "<div style='width:950px;font-family:arial;'>欢迎使用wedo，您给您的任务<p><b>"+alert.getTask()+"</b></p>设置的提醒时间为：<br/><h2 style='color:green'>"+alert.getAlert()+"</h2><br/>本邮件由系统自动发出，请勿回复。<br/>请注意您的安排，感谢您的使用。<br/>Wedo 运营组</div>"
                         +"</div>");
                 try {
                     String res = emailService.sendMail(user, password, host, from, to,
@@ -113,5 +114,35 @@ public class TaskServiceImpl implements TaskService {
 
         }
 
+    }
+
+    @Override
+    public void addDaily(int UserId, int TaskId) {
+        taskDao.setDaily(UserId,TaskId);
+        Task task = taskDao.getSpeTask(UserId,TaskId);
+        taskDao.addDailyTask(TaskId,UserId,task.getIsImportant(),task.getIsComplete(),task.getIsDaily(),task.getTask());
+    }
+
+    @Override
+    public void delDaily(int UserId, int TaskId) {
+        taskDao.cancelDaily(UserId,TaskId);
+        Task task = taskDao.getSpeTask(UserId,TaskId);
+        taskDao.delDailyTask(UserId,task.getTask());
+
+    }
+
+    @Override
+    public void checkDaily() {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm");
+        Date date = new Date();
+        String nowTime = simpleDateFormat.format(date);
+        String dailyTime = "00:01";
+        if (nowTime.equals(dailyTime)){
+            List<DailyTask> dailyTasks = taskDao.getAllDaily();
+            for (DailyTask d:
+                 dailyTasks) {
+                taskDao.addNewTask(d.getTaskId(),d.getUsrId(),d.getIsImportant(),d.getIsComplete(),d.getIsDaily(),null,d.getTask());
+            }
+        }
     }
 }

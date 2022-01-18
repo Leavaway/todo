@@ -15,4 +15,7 @@ public interface TaskService {
     void delTask(int UserId, int TaskId);
     void comTask(int UserId, int TaskId);
     void checkAlert() throws ParseException;
+    void addDaily(int UserId, int TaskId);
+    void delDaily(int UserId, int TaskId);
+    void checkDaily();
 }

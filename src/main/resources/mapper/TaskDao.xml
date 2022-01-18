@@ -14,6 +14,10 @@
         select * from todo.task
         where UsrId = #{UsrId};
     </select>
+    <select id="getSpeTask" resultType="Task">
+        select * from todo.task
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </select>
     <select id="getTarTask" resultType="String">
         select Task from todo.task
         where UsrId = #{UsrId} and TaskId = #{TaskId};
@@ -57,5 +61,27 @@
         delete from todo.task
         where UsrId = #{UsrId} and TaskId = #{TaskId};
     </delete>
+    <insert id="addDailyTask">
+        insert into todo.dailyTask
+        values (#{TaskId},#{UsrId},#{IsImportant},#{IsComplete},#{IsDaily},#{Task});
+    </insert>
+    <update id="setDaily">
+        update todo.task
+        set IsDaily = 1
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <update id="cancelDaily">
+        update todo.task
+        set IsDaily = 0
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <delete id="delDailyTask">
+        delete from todo.dailyTask
+        where UsrId = #{UsrId} and Task = #{Task};
+    </delete>
+    <select id="getAllDaily">
+        select *
+        from todo.dailyTask;
+    </select>
 </mapper>
 
