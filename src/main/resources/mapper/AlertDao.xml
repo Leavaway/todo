@@ -10,5 +10,9 @@
     <select id="getAlerts" resultType="Alert">
         select * from todo.alert;
     </select>
+    <delete id="delAlert">
+        delete from todo.alert
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </delete>
 </mapper>
 

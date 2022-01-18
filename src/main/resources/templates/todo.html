@@ -16,19 +16,19 @@
     <script src="https://cdn.bootcss.com/moment.js/2.24.0/moment-with-locales.js"></script>
     <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
     <script>
+
         $(document).ready(function () {
             let picker1 = $('#datetimepicker2').datetimepicker({
-                time
-                format: 'YYYY-MM-DD hh:mm',
+                format: 'YYYY-MM-DD HH:mm',
                 locale: moment.locale('zh-cn')
             });
             $("#setAlert").click(function () {
-                console.warn($("#dateText").val());
                 $.post("setAlert",{
                     "taskid":$("#setAlert").parent().parent().parent().attr("taskid"),
                     "usrid": $("#setAlert").parent().parent().parent().attr("usrid"),
                     "alertTime":$("#dateText").val()
                 })
+                alert("提交成功")
             })
             // picker1.on('dp.change', function (e) {
             //     picker1.data('DateTimePicker').minDate(e.date);
@@ -408,8 +408,9 @@
 
                     </p>
                 </div>
+
                 <div class="form-group" style="border: solid #EAEAEA;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" id="calender">
-                    <label>选择截止时间：</label>
+                    <label>选择提醒时间(提示将会通过邮件发送)：</label>
                     <div class='input-group date' id='datetimepicker2'>
                         <input type='text' class="form-control" id="dateText"/>
                         <span class="input-group-addon">
@@ -418,6 +419,15 @@
                         <button class="btn btn-default" style="margin-bottom: 24px" id="setAlert">提交</button>
                 </div>
                 </div>
+
+
+
+
+
+
+
+
+
                 <div style="border: solid #EAEAEA;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" >
                     <p style="font-size: 20px;padding-left: 2vh;padding-bottom: 1vh" ><i class="fa fa-calendar-minus-o" style="color:mediumpurple;font-size:25px" id="is-daily"></i>
                         设为每日事项

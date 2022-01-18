@@ -14,4 +14,5 @@ import java.util.List;
 public interface AlertDao {
     void addAlert(@Param("TaskId") int TaskId, @Param("UsrId") int UsrId, @Param("Alert") Timestamp Alert, @Param("Task") String Task,@Param("UsrEmail") String UsrEmail);
     List<Alert> getAlerts();
+    void delAlert(@Param("TaskId") int TaskId, @Param("UsrId") int UsrId);
 }

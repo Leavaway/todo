@@ -77,15 +77,17 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void checkAlert() throws ParseException {
         List<Alert> alerts = alertDao.getAlerts();
-        Date date=new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        String date1 = simpleDateFormat.format(date);
-        Date date2 = simpleDateFormat.parse(date1);
-        Timestamp sqlDate = new Timestamp(date2.getTime());
 
         for (Alert alert:
              alerts) {
-            if (alert.getAlert()==sqlDate){
+            Date date3 = new Date(alert.getAlert().getTime());
+            String a = simpleDateFormat.format(date3);
+            String b = simpleDateFormat.format(new Date());
+            System.out.println(a);
+            System.out.println(b);
+            System.out.println("---");
+            if (a.equals(b)){
                 EmailService emailService = new EmailService();
                 String user = "15757610036@163.com";
                 String password = "TLTWNSKXWDZWBFSJ";
@@ -106,7 +108,9 @@ public class TaskServiceImpl implements TaskService {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
+                alertDao.delAlert(alert.getTaskId(),alert.getUsrId());
             }
+
         }
 
     }
