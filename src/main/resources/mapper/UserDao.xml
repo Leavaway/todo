@@ -17,10 +17,14 @@
     </select>
     <insert id="registerUser">
         insert into todo.usrs
-        values (#{UsrId}, #{UsrName}, #{UsrPwd}, #{UsrEmail});
+        values (#{UsrId}, #{UsrName}, #{UsrPwd}, #{UsrEmail},#{RegisterDate});
     </insert>
     <select id="checkUsrId" resultType="User">
         select UsrId from todo.usrs
+        where UsrId = #{UsrId};
+    </select>
+    <select id="getRegisterDate" resultType="Date">
+        select RegisterDate from todo.usrs
         where UsrId = #{UsrId};
     </select>
 </mapper>
