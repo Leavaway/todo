@@ -346,7 +346,8 @@
                     if($("#sidebar").attr("taskid")==$(this).parent().attr("taskid")&&$("#sidebar").attr("usrid")==$(this).parent().attr("usrid")){
                         $("#sidebar").hide();
                     }
-                    $(this).parent().remove();
+                    const ss =$(this).parent().attr("taskid");
+                    $("li[taskid="+ss+"]").fadeOut("slow");
                 });
             }
             checkBox();

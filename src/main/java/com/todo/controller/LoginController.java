@@ -46,24 +46,20 @@ public class LoginController {
     @PostMapping("login")
     public String login(HttpServletRequest httpServletRequest,
                         HttpSession session,
-                        RedirectAttributes attributes) throws IOException {
+                        HttpServletResponse httpServletResponse) throws IOException {
         String username = httpServletRequest.getParameter("UsrName");
         String password = httpServletRequest.getParameter("UsrPwd");
         //验证用户名和密码
         User user1 = userService.checkUserName(username);
-        if(user1==null){
-            return "404";
-        }
         User user = userService.checkUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
             //验证成功登录，设置session的attr后再次获取sessionId
             user.setTasks(taskService.getTasks(user.getUsrId()));
-//            attributes.addAttribute("UsrId",user.getUsrId());
             return "redirect:/";
         } else {
-            attributes.addFlashAttribute("msg", "用户名或密码错误");
-            return "404";
+            httpServletResponse.addIntHeader("loginStatus",404);
+            return "login";
         }
 
     }
