@@ -8,8 +8,12 @@
         where UsrName = #{UsrName} and UsrPwd = #{UsrPwd};
     </select>
     <select id="checkUserName" resultType="User">
-        select UsrName from todo.usrs
+        select * from todo.usrs
         where UsrName = #{UsrName};
+    </select>
+    <select id="checkUsrEmail" resultType="User">
+        select * from todo.usrs
+        where UsrEmail = #{UsrEmail};
     </select>
     <insert id="registerUser">
         insert into todo.usrs

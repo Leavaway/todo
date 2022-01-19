@@ -39,4 +39,11 @@ public class UserServiceImpl implements UserService {
         User user = userDao.checkUserName(username);
         return user;
     }
+
+    @Override
+    public User checkUsrEmail(String useremail) {
+        return userDao.checkUsrEmail(useremail);
+    }
+
+
 }

@@ -8,4 +8,6 @@ public interface UserService {
     public boolean userRegister(String username, String password, String email);
 
     public User checkUserName(String username);
+
+    public User checkUsrEmail(String useremail);
 }

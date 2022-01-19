@@ -40,7 +40,9 @@ public class IndexController {
                 stringBuilder.append("&");
             }
             Cookie cookie = new Cookie("Tasks", URLEncoder.encode(stringBuilder.toString(), "utf-8"));
+            Cookie cookie1 = new Cookie("login", "1");
             httpServletResponse.addCookie(cookie);
+            httpServletResponse.addCookie(cookie1);
             return "todo";
         }else{
             return "todo";
@@ -61,5 +63,15 @@ public class IndexController {
             httpServletResponse.addIntHeader("TaskId",taskService.getTaskId(user.getUsrId())+1);
             httpServletResponse.addIntHeader("UsrId",user.getUsrId());
         }
+    }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest httpServletRequest,
+                         HttpSession session,
+                         HttpServletResponse httpServletResponse){
+        session.invalidate();
+        Cookie cookie = new Cookie("Task",null);
+        cookie.setMaxAge(0);
+        httpServletResponse.addCookie(cookie);
+        return "redirect:/";
     }
 }

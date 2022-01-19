@@ -70,12 +70,20 @@
     </style>
     <script>
         $(function() {
+            if(document.cookie=="status=5"){
+                alert("用户名已存在");
+            }else if (document.cookie=="status=6"){
+                alert("邮箱已存在");
+            }else if (document.cookie=="status=7"){
+                alert("两次密码输入不一致");
+            };
             const usrName = document.querySelector(".usr-name");
             const usrEmail = document.querySelector(".usr-email");
             const password = document.querySelector(".pwd");
             const loginBtn = document.querySelector(".but");
+            const checkPwd = document.querySelector(".pwd2");
             loginBtn.addEventListener("click",evt => {
-                console.log("click it");
+
                 if (usrName.value===""){
                     alert("请输入用户名");
                     return;
@@ -108,7 +116,7 @@
         <b style="color: white">用户名: </b><input class="usr-name" type="text" required="required" name="UsrName">
         <b style="color: white">邮箱: </b><input class="usr-email" type="text" required="required" name="UsrEmail">
         <b style="color: white">密码: </b><input class="pwd" type="password" required="required" name="UsrPwd">
-        <b style="color: white">请再次确认密码: </b><input class="pwd" type="password" required="required">
+        <b style="color: white">请再次确认密码: </b><input class="pwd2" type="password" required="required" name="CheckPwd">
         <button class="but" type="submit">注册</button>
     </form>
 </div>

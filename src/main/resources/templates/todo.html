@@ -130,53 +130,57 @@
                 }
                 return decodeURIComponent(encoded);
             }
-            let x = decodeURIComponent(document.cookie.split("=")[1]);
-            console.log(x);
+            let pre = document.cookie.split(";")[0]
+            let x = decodeURIComponent(pre.split("=")[1]);
             var y = x.split("&");
             y.pop();
-            for(var i=0; i<y.length; i++) {
-                console.log(y);
-                // y[i]+="}";
-                y[i] = JSON.parse(y[i]);
-                console.log(y[i]["task"]);
-                if (y[i]["task"] != null && y[i]["task"]!= ""&&y[i]["isComplete"]!= "1"){
-                    tasks+=1;
-                    const newLi = document.createElement("li");
-                    newLi.setAttribute("isComplete",y[i]["isComplete"]);
-                    newLi.setAttribute("isDaily",y[i]["isDaily"]);
-                    newLi.setAttribute("isImportant",y[i]["isImportant"]);
-                    newLi.setAttribute("task",y[i]["task"]);
-                    newLi.setAttribute("taskId",y[i]["taskId"]);
-                    newLi.setAttribute("usrId",y[i]["usrId"]);
-                    newLi.setAttribute("alertTime",y[i]["alertTime"]);
-                    newLi.classList.add("listed-tasks");
-                    newLi.style.display = "none";
-                    const newCheckBox = document.createElement("input");
-                    newCheckBox.type="checkbox";
-                    newCheckBox.classList.add("check-box");
-                    newLi.appendChild(newCheckBox);
-                    const newSpan = document.createElement("span");
-                    newSpan.classList.add("text");
-                    newSpan.innerText = " " + y[i]["task"] + " ";
-                    if(y[i]["isImportant"]=="1"){
-                        newSpan.style.fontWeight = "bold";
+            console.log(document.cookie);
+            console.log(document.cookie.split("login=")[1]);
+            if(document.cookie.split("login=")[1]==1){
+                for(var i=0; i<y.length; i++) {
+                    // y[i]+="}";
+                    y[i] = JSON.parse(y[i]);
+                    console.log(y[i]["task"]);
+                    if (y[i]["task"] != null && y[i]["task"]!= ""&&y[i]["isComplete"]!= "1"){
+                        tasks+=1;
+                        const newLi = document.createElement("li");
+                        newLi.setAttribute("isComplete",y[i]["isComplete"]);
+                        newLi.setAttribute("isDaily",y[i]["isDaily"]);
+                        newLi.setAttribute("isImportant",y[i]["isImportant"]);
+                        newLi.setAttribute("task",y[i]["task"]);
+                        newLi.setAttribute("taskId",y[i]["taskId"]);
+                        newLi.setAttribute("usrId",y[i]["usrId"]);
+                        newLi.setAttribute("alertTime",y[i]["alertTime"]);
+                        newLi.classList.add("listed-tasks");
+                        newLi.style.display = "none";
+                        const newCheckBox = document.createElement("input");
+                        newCheckBox.type="checkbox";
+                        newCheckBox.classList.add("check-box");
+                        newLi.appendChild(newCheckBox);
+                        const newSpan = document.createElement("span");
+                        newSpan.classList.add("text");
+                        newSpan.innerText = " " + y[i]["task"] + " ";
+                        if(y[i]["isImportant"]=="1"){
+                            newSpan.style.fontWeight = "bold";
+                        }
+                        newLi.appendChild(newSpan);
+                        const newBtn = document.createElement("button");
+                        newBtn.classList.add("btn-xs");
+                        newBtn.classList.add("del-btn");
+                        newBtn.style.fontSize = "8px";
+                        newBtn.style.color = "red";
+                        const newDel = document.createElement("i");
+                        newDel.classList.add("fa");
+                        newDel.classList.add("fa-close");
+                        newBtn.appendChild(newDel);
+                        newLi.appendChild(newBtn);
+                        console.log(newLi);
+                        document.getElementById("task").appendChild(newLi);
+                        $(".listed-tasks").fadeIn("slow");
                     }
-                    newLi.appendChild(newSpan);
-                    const newBtn = document.createElement("button");
-                    newBtn.classList.add("btn-xs");
-                    newBtn.classList.add("del-btn");
-                    newBtn.style.fontSize = "8px";
-                    newBtn.style.color = "red";
-                    const newDel = document.createElement("i");
-                    newDel.classList.add("fa");
-                    newDel.classList.add("fa-close");
-                    newBtn.appendChild(newDel);
-                    newLi.appendChild(newBtn);
-                    console.log(newLi);
-                    document.getElementById("task").appendChild(newLi);
-                    $(".listed-tasks").fadeIn("slow");
                 }
             }
+
             document.addEventListener("keyup", e => {
                 if(e.code === "Slash") {
                     todoInput.focus();
@@ -406,7 +410,7 @@
                                 <ul class="dropdown-menu">
                                     <li><a href="#">My profile</a></li>
                                     <li><a th:href="admin">Sign in</a></li>
-                                    <li><a th:href="logout">Sign out</a></li>
+                                    <li><a th:href="logout" id="sign-out">Sign out</a></li>
                                     <li class="divider"></li>
                                     <li><a href="#">分离的链接</a></li>
                                     <li class="divider"></li>

@@ -50,7 +50,6 @@ public class LoginController {
         String username = httpServletRequest.getParameter("UsrName");
         String password = httpServletRequest.getParameter("UsrPwd");
         //验证用户名和密码
-        User user1 = userService.checkUserName(username);
         User user = userService.checkUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
@@ -58,7 +57,8 @@ public class LoginController {
             user.setTasks(taskService.getTasks(user.getUsrId()));
             return "redirect:/";
         } else {
-            httpServletResponse.addIntHeader("loginStatus",404);
+            Cookie cookie = new Cookie("status","0");
+            httpServletResponse.addCookie(cookie);
             return "login";
         }
 
@@ -68,20 +68,35 @@ public class LoginController {
         return "register";
     }
     @PostMapping("register")
-    public String UsrRegister(HttpServletRequest httpServletRequest){
+    public String UsrRegister(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
         String UsrName = httpServletRequest.getParameter("UsrName");
         String UsrPwd = httpServletRequest.getParameter("UsrPwd");
         String UsrEmail = httpServletRequest.getParameter("UsrEmail");
+        String CheckPwd = httpServletRequest.getParameter("CheckPwd");
+        User user1 = userService.checkUserName(UsrName);
+        User user2 = userService.checkUsrEmail(UsrEmail);
+        if(!UsrPwd.equals(CheckPwd)){
+            Cookie cookie = new Cookie("status","7");
+            httpServletResponse.addCookie(cookie);
+            return "register";
+        }
+        if (user1!=null){
+            Cookie cookie = new Cookie("status","5");
+            httpServletResponse.addCookie(cookie);
+            return "register";
+        }else if (user2!=null){
+            Cookie cookie = new Cookie("status","6");
+            httpServletResponse.addCookie(cookie);
+            return "register";
+        }
         if(userService.userRegister(UsrName, UsrPwd, UsrEmail)){
             return "login";
         }else {
-            return "404";
+            Cookie cookie = new Cookie("status","5");
+            httpServletResponse.addCookie(cookie);
+            return "register";
         }
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.removeAttribute("user");
-        return "redirect:/admin";
-    }
+
 }
