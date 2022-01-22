@@ -2,9 +2,11 @@ package com.todo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.todo.dao.TaskDao;
+import com.todo.dao.UserDao;
 import com.todo.pojo.Task;
 import com.todo.pojo.User;
 import com.todo.service.TaskService;
+import com.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.text.ParseException;
 import java.util.List;
 
 @Controller
@@ -26,8 +29,10 @@ public class IndexController {
     TaskService taskService;
     @Autowired
     TaskDao taskDao;
+    @Autowired
+    UserService userService;
     @GetMapping()
-    public String indexPage(HttpSession httpSession, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException {
+    public String indexPage(HttpSession httpSession, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ParseException {
         User user = (User) httpSession.getAttribute("user");
         if (user!=null){
             httpServletRequest.setCharacterEncoding("utf-8");
@@ -35,14 +40,18 @@ public class IndexController {
             StringBuilder stringBuilder = new StringBuilder();
             for (Task t:
                  user.getTasks()) {
-                String jsonString = JSONObject.toJSONString(t);
-                stringBuilder.append(jsonString);
-                stringBuilder.append("&");
+                if(t.getIsComplete()==0){
+                    String jsonString = JSONObject.toJSONString(t);
+                    stringBuilder.append(jsonString);
+                    stringBuilder.append("&");
+                }
             }
             Cookie cookie = new Cookie("Tasks", URLEncoder.encode(stringBuilder.toString(), "utf-8"));
-            Cookie cookie1 = new Cookie("login", "1");
+            Cookie cookie1 = new Cookie("login",String.valueOf(userService.getDate(user.getUsrId())));
+            Cookie cookie2 = new Cookie("comTasks",String.valueOf(taskService.getCompleteTasks(user.getUsrId())));
             httpServletResponse.addCookie(cookie);
             httpServletResponse.addCookie(cookie1);
+            httpServletResponse.addCookie(cookie2);
             return "todo";
         }else{
             return "todo";

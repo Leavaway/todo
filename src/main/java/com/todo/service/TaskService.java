@@ -18,4 +18,5 @@ public interface TaskService {
     void addDaily(int UserId, int TaskId);
     void delDaily(int UserId, int TaskId);
     void checkDaily();
+    int getCompleteTasks(int UserId);
 }

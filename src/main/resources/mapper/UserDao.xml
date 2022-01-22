@@ -23,7 +23,7 @@
         select UsrId from todo.usrs
         where UsrId = #{UsrId};
     </select>
-    <select id="getRegisterDate" resultType="Date">
+    <select id="getRegisterDate" resultType="java.sql.Date">
         select RegisterDate from todo.usrs
         where UsrId = #{UsrId};
     </select>

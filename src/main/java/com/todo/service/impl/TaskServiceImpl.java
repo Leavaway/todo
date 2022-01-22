@@ -145,4 +145,9 @@ public class TaskServiceImpl implements TaskService {
             }
         }
     }
+
+    @Override
+    public int getCompleteTasks(int UserId) {
+        return taskDao.getCompleteTasks(UserId).size();
+    }
 }

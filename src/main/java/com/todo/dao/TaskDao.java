@@ -36,4 +36,5 @@ public interface TaskDao {
     void setDaily(@Param("UsrId") int UsrId,@Param("TaskId") int TaskId);
     void cancelDaily(@Param("UsrId") int UsrId,@Param("TaskId") int TaskId);
     List<DailyTask> getAllDaily();
+    List<Task> getCompleteTasks(@Param("UsrId") int UsrId);
 }

@@ -134,50 +134,60 @@
             let x = decodeURIComponent(pre.split("=")[1]);
             var y = x.split("&");
             y.pop();
-            console.log(document.cookie);
-            console.log(document.cookie.split("login=")[1]);
-            if(document.cookie.split("login=")[1]==1){
-                for(var i=0; i<y.length; i++) {
-                    // y[i]+="}";
-                    y[i] = JSON.parse(y[i]);
-                    console.log(y[i]["task"]);
-                    if (y[i]["task"] != null && y[i]["task"]!= ""&&y[i]["isComplete"]!= "1"){
-                        tasks+=1;
-                        const newLi = document.createElement("li");
-                        newLi.setAttribute("isComplete",y[i]["isComplete"]);
-                        newLi.setAttribute("isDaily",y[i]["isDaily"]);
-                        newLi.setAttribute("isImportant",y[i]["isImportant"]);
-                        newLi.setAttribute("task",y[i]["task"]);
-                        newLi.setAttribute("taskId",y[i]["taskId"]);
-                        newLi.setAttribute("usrId",y[i]["usrId"]);
-                        newLi.setAttribute("alertTime",y[i]["alertTime"]);
-                        newLi.classList.add("listed-tasks");
-                        newLi.style.display = "none";
-                        const newCheckBox = document.createElement("input");
-                        newCheckBox.type="checkbox";
-                        newCheckBox.classList.add("check-box");
-                        newLi.appendChild(newCheckBox);
-                        const newSpan = document.createElement("span");
-                        newSpan.classList.add("text");
-                        newSpan.innerText = " " + y[i]["task"] + " ";
-                        if(y[i]["isImportant"]=="1"){
-                            newSpan.style.fontWeight = "bold";
-                        }
-                        newLi.appendChild(newSpan);
-                        const newBtn = document.createElement("button");
-                        newBtn.classList.add("btn-xs");
-                        newBtn.classList.add("del-btn");
-                        newBtn.style.fontSize = "8px";
-                        newBtn.style.color = "red";
-                        const newDel = document.createElement("i");
-                        newDel.classList.add("fa");
-                        newDel.classList.add("fa-close");
-                        newBtn.appendChild(newDel);
-                        newLi.appendChild(newBtn);
-                        console.log(newLi);
-                        document.getElementById("task").appendChild(newLi);
-                        $(".listed-tasks").fadeIn("slow");
+            let registerTime = document.cookie.split("login=")[1].split("; comTasks=")[0];
+            console.log(document.cookie)
+            console.log(registerTime);
+            let comTasks = document.cookie.split("login=")[1].split("comTasks=")[1];
+            if(registerTime!=undefined&&comTasks!=undefined){
+                document.querySelector("#register-date").innerHTML = "欢迎！你已经使用Wedo "+registerTime+" 天了！";
+                document.querySelector("#register-date").innerHTML += "<br>";
+                document.querySelector("#register-date").innerHTML += "你已经完成了 " +comTasks+" 个任务！";
+            }
+
+            for(var i=0; i<y.length; i++) {
+                y[i] = JSON.parse(y[i]);
+                if (y[i]["task"] != null && y[i]["task"]!= ""){
+                    tasks+=1;
+                    const newLi = document.createElement("li");
+                    newLi.setAttribute("isComplete",y[i]["isComplete"]);
+                    newLi.setAttribute("isDaily",y[i]["isDaily"]);
+                    newLi.setAttribute("isImportant",y[i]["isImportant"]);
+                    newLi.setAttribute("task",y[i]["task"]);
+                    newLi.setAttribute("taskId",y[i]["taskId"]);
+                    newLi.setAttribute("usrId",y[i]["usrId"]);
+                    newLi.setAttribute("alertTime",y[i]["alertTime"]);
+                    newLi.classList.add("listed-tasks");
+                    newLi.style.display = "none";
+                    newLi.style.listStyleType="none";
+                    newLi.style.border="2px solid hsla(0, 0%, 100%,.5)";
+                    newLi.style.paddingLeft="10px";
+                    newLi.style.paddingTop="5px";
+                    newLi.style.paddingBottom="5px";
+                    newLi.style.borderRadius="6px";
+                    newLi.style.marginBottom="10px";
+                    const newCheckBox = document.createElement("input");
+                    newCheckBox.type="checkbox";
+                    newCheckBox.classList.add("check-box");
+                    newLi.appendChild(newCheckBox);
+                    const newSpan = document.createElement("span");
+                    newSpan.classList.add("text");
+                    newSpan.innerText = " " + y[i]["task"] + " ";
+                    if(y[i]["isImportant"]=="1"){
+                        newSpan.style.fontWeight = "bold";
                     }
+                    newLi.appendChild(newSpan);
+                    const newBtn = document.createElement("button");
+                    newBtn.classList.add("btn-xs");
+                    newBtn.classList.add("del-btn");
+                    newBtn.style.fontSize = "8px";
+                    newBtn.style.color = "red";
+                    const newDel = document.createElement("i");
+                    newDel.classList.add("fa");
+                    newDel.classList.add("fa-close");
+                    newBtn.appendChild(newDel);
+                    newLi.appendChild(newBtn);
+                    document.getElementById("task").appendChild(newLi);
+                    $(".listed-tasks").fadeIn("slow");
                 }
             }
 
@@ -195,6 +205,13 @@
                         const newLi = document.createElement("li");
                         newLi.classList.add("listed-tasks");
                         newLi.style.display = "none";
+                        newLi.style.listStyleType="none";
+                        newLi.style.border="2px solid hsla(0, 0%, 100%,.5)";
+                        newLi.style.paddingLeft="10px";
+                        newLi.style.paddingTop="5px";
+                        newLi.style.paddingBottom="5px";
+                        newLi.style.borderRadius="6px";
+                        newLi.style.marginBottom="10px";
                         //在新建li标签后通过newTask get 获取taskId写入attr
                         var xmlhttp;
                         if (window.XMLHttpRequest) {
@@ -237,7 +254,6 @@
                         newDel.classList.add("fa-close");
                         newBtn.appendChild(newDel);
                         newLi.appendChild(newBtn);
-                        console.log(newLi);
                         document.getElementById("task").appendChild(newLi);
                         $(".listed-tasks").fadeIn("slow");
                         $.post("", {
@@ -261,6 +277,13 @@
                     const newLi = document.createElement("li");
                     newLi.classList.add("listed-tasks");
                     newLi.style.display = "none";
+                    newLi.style.listStyleType="none";
+                    newLi.style.border="2px solid hsla(0, 0%, 100%,.5)";
+                    newLi.style.paddingLeft="10px";
+                    newLi.style.paddingTop="5px";
+                    newLi.style.paddingBottom="5px";
+                    newLi.style.borderRadius="6px";
+                    newLi.style.marginBottom="10px";
                     //在新建li标签后通过newTask get 获取taskId写入attr
                     var xmlhttp;
                     if (window.XMLHttpRequest) {
@@ -351,7 +374,14 @@
                         $("#sidebar").hide();
                     }
                     const ss =$(this).parent().attr("taskid");
-                    $("li[taskid="+ss+"]").fadeOut("slow");
+                    $(this).siblings("span").css("text-decoration","line-through");
+                    $(this).siblings("span").css("opacity","0.3");
+                    $(this).siblings("button").remove();
+                    comTasks++;
+                    console.log("!!");
+                    document.querySelector("#register-date").innerHTML = "欢迎！你已经使用Wedo "+registerTime+" 天了！";
+                    document.querySelector("#register-date").innerHTML += "<br>";
+                    document.querySelector("#register-date").innerHTML += "你已经完成了 " +comTasks+" 个任务！";
                 });
             }
             checkBox();
@@ -427,9 +457,9 @@
         <div class="col-md-9" style="padding:0 0 0 0;background-color: #A3A1A8;height: 90vh" id="just1">
             <div class="col-md-9 column leftSide">
                 <h2>Tasks</h2>
-                <input type="text" placeholder="Add your task here" id="data-new-list-input" style="border: 0 none;outline: none;border-bottom: 1px solid mediumpurple;" >
-                <button class="btn" style="background-color:mediumpurple;color: white" id="data-new-list-btn">ADD TASKS</button>
-                <ul id="task" >
+                <input type="text" placeholder="Add your task here" id="data-new-list-input" style="border: 0 none;outline: none;border-bottom: 1px solid mediumpurple;margin-left: 10px;padding: 5px 10px 5px 5px;" >
+                <button class="btn" style="background-color:mediumpurple;color: white;margin-bottom: 5px;" id="data-new-list-btn">ADD TASKS</button>
+                <ul id="task" style="padding-left: 10px">
                 </ul>
             </div>
             <div class="col-md-3" style="margin-right:0; float:right;background-color: #F5F5F5;height: 90vh" id="sidebar">
@@ -491,6 +521,11 @@
                     <!--                <li> <a href="#"> <i class="fa fa-fw fa-twitter"> </i> Last page </a> </li>-->
                 </ul>
             </nav>
+            <div style="margin: 2px 2px 2px 2px">
+                <p id="register-date">
+
+                </p>
+            </div>
 
 
         </div>

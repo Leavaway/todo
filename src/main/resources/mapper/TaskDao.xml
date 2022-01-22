@@ -83,5 +83,9 @@
         select *
         from todo.dailyTask;
     </select>
+    <select id="getCompleteTasks" resultType="Task">
+        select * from todo.task
+        where UsrId = #{UsrId} and IsComplete = 1;
+    </select>
 </mapper>
 
