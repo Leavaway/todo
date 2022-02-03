@@ -150,4 +150,9 @@ public class TaskServiceImpl implements TaskService {
     public int getCompleteTasks(int UserId) {
         return taskDao.getCompleteTasks(UserId).size();
     }
+
+    @Override
+    public void delAlert(int UserId, int TaskId) {
+        taskDao.delAlert(UserId,TaskId);
+    }
 }

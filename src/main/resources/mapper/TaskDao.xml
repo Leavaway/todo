@@ -87,5 +87,9 @@
         select * from todo.task
         where UsrId = #{UsrId} and IsComplete = 1;
     </select>
+    <delete id="delAlert">
+        delete from todo.alert
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </delete>
 </mapper>
 

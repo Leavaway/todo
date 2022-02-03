@@ -75,4 +75,8 @@ public class TaskController {
     public void checkDaily(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
         taskService.checkDaily();
     }
+    @PostMapping("delAlert")
+    public void delAlert(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){
+        taskService.delAlert(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")));
+    }
 }

@@ -83,4 +83,5 @@ public class IndexController {
         httpServletResponse.addCookie(cookie);
         return "redirect:/";
     }
+
 }
