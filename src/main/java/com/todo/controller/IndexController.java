@@ -35,11 +35,14 @@ public class IndexController {
     public String indexPage(HttpSession httpSession, HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) throws IOException, ParseException {
         User user = (User) httpSession.getAttribute("user");
         if (user!=null){
+            int UserId = user.getUsrId();
+            User user1 = userService.getUser(UserId);
             httpServletRequest.setCharacterEncoding("utf-8");
             httpServletResponse.setContentType("text/html;charset=utf-8");
             StringBuilder stringBuilder = new StringBuilder();
+
             for (Task t:
-                 user.getTasks()) {
+                    taskService.getTasks(UserId)) {
                 if(t.getIsComplete()==0){
                     String jsonString = JSONObject.toJSONString(t);
                     stringBuilder.append(jsonString);
@@ -47,8 +50,11 @@ public class IndexController {
                 }
             }
             Cookie cookie = new Cookie("Tasks", URLEncoder.encode(stringBuilder.toString(), "utf-8"));
-            Cookie cookie1 = new Cookie("login",String.valueOf(userService.getDate(user.getUsrId())));
-            Cookie cookie2 = new Cookie("comTasks",String.valueOf(taskService.getCompleteTasks(user.getUsrId())));
+            Cookie cookie1 = new Cookie("login",String.valueOf(userService.getDate(UserId)));
+            Cookie cookie2 = new Cookie("usrname",userService.getUserName(UserId));
+            cookie.setMaxAge(10);
+            cookie1.setMaxAge(10);
+            cookie2.setMaxAge(10);
             httpServletResponse.addCookie(cookie);
             httpServletResponse.addCookie(cookie1);
             httpServletResponse.addCookie(cookie2);
@@ -62,15 +68,19 @@ public class IndexController {
         return "help";
     }
     @GetMapping("newTask")
-    public void getNewTaskId(HttpSession httpSession, HttpServletResponse httpServletResponse){
+    public void getNewTaskId(HttpSession httpSession, HttpServletResponse httpServletResponse) throws IOException {
         User user = (User) httpSession.getAttribute("user");
-        List<Task> task1 = taskDao.getTask(user.getUsrId());
-        if(task1.size()==0){
-            httpServletResponse.addIntHeader("TaskId",1);
-            httpServletResponse.addIntHeader("UsrId",user.getUsrId());
+        if(user!=null){
+            List<Task> task1 = taskDao.getTask(user.getUsrId());
+            if(task1.size()==0){
+                httpServletResponse.addIntHeader("TaskId",1);
+                httpServletResponse.addIntHeader("UsrId",user.getUsrId());
+            }else {
+                httpServletResponse.addIntHeader("TaskId",taskService.getTaskId(user.getUsrId())+1);
+                httpServletResponse.addIntHeader("UsrId",user.getUsrId());
+            }
         }else {
-            httpServletResponse.addIntHeader("TaskId",taskService.getTaskId(user.getUsrId())+1);
-            httpServletResponse.addIntHeader("UsrId",user.getUsrId());
+            httpServletResponse.sendError(401,"用户尚未登陆");
         }
     }
     @GetMapping("/logout")

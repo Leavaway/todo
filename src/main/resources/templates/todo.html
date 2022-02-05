@@ -760,66 +760,66 @@
                 }
                 return decodeURIComponent(encoded);
             }
-            let pre = document.cookie.split(";")[0]
-            let x = decodeURIComponent(pre.split("=")[1]);
-            var y = x.split("&");
-            y.pop();
-            let registerTime = document.cookie.split("login=")[1].split("; comTasks=")[0];
-            console.log(document.cookie)
-            console.log(registerTime);
-            let comTasks = document.cookie.split("login=")[1].split("comTasks=")[1];
-            if(registerTime!=undefined&&comTasks!=undefined){
-                document.querySelector("#register-date").innerHTML = "欢迎！你已经使用Wedo "+registerTime+" 天了！";
-                document.querySelector("#register-date").innerHTML += "<br>";
-                document.querySelector("#register-date").innerHTML += "你已经完成了 " +comTasks+" 个任务！";
-            }
-
-            for(var i=0; i<y.length; i++) {
-                y[i] = JSON.parse(y[i]);
-                if (y[i]["task"] != null && y[i]["task"]!= ""){
-                    tasks+=1;
-                    const newLi = document.createElement("li");
-                    newLi.setAttribute("isComplete",y[i]["isComplete"]);
-                    newLi.setAttribute("isDaily",y[i]["isDaily"]);
-                    newLi.setAttribute("isImportant",y[i]["isImportant"]);
-                    newLi.setAttribute("task",y[i]["task"]);
-                    newLi.setAttribute("taskId",y[i]["taskId"]);
-                    newLi.setAttribute("usrId",y[i]["usrId"]);
-                    newLi.setAttribute("alertTime",y[i]["alertTime"]);
-                    newLi.classList.add("listed-tasks");
-                    newLi.style.display = "none";
-                    newLi.style.listStyleType="none";
-                    newLi.style.border="2px solid hsla(0, 0%, 100%,.5)";
-                    newLi.style.paddingLeft="10px";
-                    newLi.style.paddingTop="5px";
-                    newLi.style.paddingBottom="5px";
-                    newLi.style.borderRadius="6px";
-                    newLi.style.marginBottom="10px";
-                    const newCheckBox = document.createElement("input");
-                    newCheckBox.type="checkbox";
-                    newCheckBox.classList.add("check-box");
-                    newLi.appendChild(newCheckBox);
-                    const newSpan = document.createElement("span");
-                    newSpan.classList.add("text");
-                    newSpan.innerText = " " + y[i]["task"] + " ";
-                    if(y[i]["isImportant"]=="1"){
-                        newSpan.style.fontWeight = "bold";
+            // 加入未登录状态检验
+            if(document.cookie!=""){
+                let pre = document.cookie.split(";")[0]
+                let x = decodeURIComponent(pre.split("=")[1]);
+                var y = x.split("&");
+                y.pop();
+                let registerTime = document.cookie.split("login=")[1].split("; usrname=")[0];
+                let usrname = document.cookie.split("login=")[1].split("usrname=")[1];
+                if(usrname!=undefined){
+                    document.querySelector("#loginStatus").innerHTML = "欢迎, "+usrname;
+                }
+                for(var i=0; i<y.length; i++) {
+                    y[i] = JSON.parse(y[i]);
+                    if (y[i]["task"] != null && y[i]["task"]!= ""){
+                        tasks+=1;
+                        const newLi = document.createElement("li");
+                        newLi.setAttribute("isComplete",y[i]["isComplete"]);
+                        newLi.setAttribute("isDaily",y[i]["isDaily"]);
+                        newLi.setAttribute("isImportant",y[i]["isImportant"]);
+                        newLi.setAttribute("task",y[i]["task"]);
+                        newLi.setAttribute("taskId",y[i]["taskId"]);
+                        newLi.setAttribute("usrId",y[i]["usrId"]);
+                        newLi.setAttribute("alertTime",y[i]["alertTime"]);
+                        newLi.classList.add("listed-tasks");
+                        newLi.style.display = "none";
+                        newLi.style.listStyleType="none";
+                        newLi.style.border="2px solid hsla(0, 0%, 100%,.5)";
+                        newLi.style.paddingLeft="10px";
+                        newLi.style.paddingTop="5px";
+                        newLi.style.paddingBottom="5px";
+                        newLi.style.borderRadius="6px";
+                        newLi.style.marginBottom="10px";
+                        const newCheckBox = document.createElement("input");
+                        newCheckBox.type="checkbox";
+                        newCheckBox.classList.add("check-box");
+                        newLi.appendChild(newCheckBox);
+                        const newSpan = document.createElement("span");
+                        newSpan.classList.add("text");
+                        newSpan.innerText = " " + y[i]["task"] + " ";
+                        if(y[i]["isImportant"]=="1"){
+                            newSpan.style.fontWeight = "bold";
+                        }
+                        newLi.appendChild(newSpan);
+                        const newBtn = document.createElement("a");
+                        newBtn.classList.add("fa");
+                        newBtn.classList.add("fa-times-rectangle");
+                        newLi.appendChild(newBtn);
+                        document.getElementById("task").appendChild(newLi);
+                        $(".listed-tasks").fadeIn("slow");
                     }
-                    newLi.appendChild(newSpan);
-                    const newBtn = document.createElement("button");
-                    newBtn.classList.add("btn-xs");
-                    newBtn.classList.add("del-btn");
-                    newBtn.style.fontSize = "8px";
-                    newBtn.style.color = "red";
-                    const newDel = document.createElement("i");
-                    newDel.classList.add("fa");
-                    newDel.classList.add("fa-close");
-                    newBtn.appendChild(newDel);
-                    newLi.appendChild(newBtn);
-                    document.getElementById("task").appendChild(newLi);
-                    $(".listed-tasks").fadeIn("slow");
                 }
             }
+
+            // if(registerTime!=undefined&&comTasks!=undefined){
+            //     document.querySelector("#register-date").innerHTML = "欢迎！你已经使用Wedo "+registerTime+" 天了！";
+            //     document.querySelector("#register-date").innerHTML += "<br>";
+            //     document.querySelector("#register-date").innerHTML += "你已经完成了 " +comTasks+" 个任务！";
+            // }
+
+
 
             document.addEventListener("keyup", e => {
                 if(e.code === "Slash") {
@@ -828,6 +828,10 @@
             })
             $("input").keypress(function () {
                 if (event.keyCode=="13") {
+                    if($("#loginStatus").text()==""||$("#loginStatus").text()==null){
+                        alert("请先登录");
+                        return
+                    }
                     tasks+=1;
                     let todoVal = todoInput.value;
                     if (todoInput.value && todoInput.value != " " && todoInput.value != "  " && todoInput.value != "   " && todoInput.value != "    "
@@ -874,15 +878,9 @@
                         newSpan.classList.add("text");
                         newSpan.innerText = " " + todoInput.value + " ";
                         newLi.appendChild(newSpan);
-                        const newBtn = document.createElement("button");
-                        newBtn.classList.add("btn-xs");
-                        newBtn.classList.add("del-btn");
-                        newBtn.style.fontSize = "8px";
-                        newBtn.style.color = "red";
-                        const newDel = document.createElement("i");
-                        newDel.classList.add("fa");
-                        newDel.classList.add("fa-close");
-                        newBtn.appendChild(newDel);
+                        const newBtn = document.createElement("a");
+                        newBtn.classList.add("fa");
+                        newBtn.classList.add("fa-times-rectangle");
                         newLi.appendChild(newBtn);
                         document.getElementById("task").appendChild(newLi);
                         $(".listed-tasks").fadeIn("slow");
@@ -900,6 +898,10 @@
             })
 
             newTodoBtn.addEventListener("click",evt => {
+                if($("#loginStatus").text()==""||$("#loginStatus").text()==null){
+                    alert("请先登录");
+                    return
+                }
                 tasks+=1;
                 let todoVal = todoInput.value;
                 if(todoInput.value&&todoInput.value!= " "&&todoInput.value!= "  "&&todoInput.value!= "   "&&todoInput.value!= "    "
@@ -945,15 +947,9 @@
                     newSpan.classList.add("text");
                     newSpan.innerText = " " + todoInput.value + " ";
                     newLi.appendChild(newSpan);
-                    const newBtn = document.createElement("button");
-                    newBtn.classList.add("btn-xs");
-                    newBtn.classList.add("del-btn");
-                    newBtn.style.fontSize = "8px";
-                    newBtn.style.color = "red";
-                    const newDel = document.createElement("i");
-                    newDel.classList.add("fa");
-                    newDel.classList.add("fa-close");
-                    newBtn.appendChild(newDel);
+                    const newBtn = document.createElement("a");
+                    newBtn.classList.add("fa");
+                    newBtn.classList.add("fa-times-rectangle");
                     newLi.appendChild(newBtn);
                     document.getElementById("task").appendChild(newLi);
                     $(".listed-tasks").fadeIn("slow");
@@ -970,7 +966,7 @@
             });
             container.addEventListener("click", evt => {
                 const item = evt.target;
-                if (item.className === "btn-xs del-btn") {
+                if (item.className === "fa fa-times-rectangle") {
                     const todo = item.parentElement;
                     $.post("delete",{
                         "usrid":todo.getAttribute("usrid"),
@@ -981,7 +977,7 @@
                     }
                     todo.remove();
                 }
-                if (item.className === "fa fa-close") {
+                if (item.className === "fa fa-times-rectangle") {
                     const todo = item.parentElement.parentElement;
                     $.post("delete",{
                         "usrid":todo.getAttribute("usrid"),
@@ -993,6 +989,13 @@
                     todo.remove();
                 }
             });
+            document.querySelector("#logOut").addEventListener("click",evt => {
+                document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                $("#loginStatus").text("");
+                $("#task").remove();
+                $("#sidebar").hide();
+                $.get("logout");
+            })
             sideBar();
             function checkBox() {
                 $("input[type='checkbox']").click(function () {
@@ -1006,12 +1009,9 @@
                     const ss =$(this).parent().attr("taskid");
                     $(this).siblings("span").css("text-decoration","line-through");
                     $(this).siblings("span").css("opacity","0.3");
-                    $(this).siblings("button").remove();
+                    $(this).siblings("a").remove();
                     comTasks++;
                     console.log("!!");
-                    document.querySelector("#register-date").innerHTML = "欢迎！你已经使用Wedo "+registerTime+" 天了！";
-                    document.querySelector("#register-date").innerHTML += "<br>";
-                    document.querySelector("#register-date").innerHTML += "你已经完成了 " +comTasks+" 个任务！";
                 });
             }
             checkBox();
@@ -1055,7 +1055,7 @@
             <div class="col-12">
                 <nav class="navbar navbar-expand-md navbar-light">
 
-                    <img src="https://s3.bmp.ovh/imgs/2022/01/54a509d1efc8a009.png" width="88" height="36" alt="">
+                    <img src="https://s3.bmp.ovh/imgs/2022/02/c26578f4925f1b2a.png" width="120" height="50" alt="">
 
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -1070,8 +1070,11 @@
                                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" style="font-family: 'Microsoft JhengHei';font-weight: bold">用户</a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" th:href="admin">登录</a>
-                                    <a class="dropdown-item" th:href="logout">登出</a>
+                                    <a class="dropdown-item" id="logOut">登出</a>
                                 </div>
+                            </li>
+                            <li class=" pl-4 pl-md-0 ml-0 ml-md-4">
+                                <a class="nav-link" style="font-family: 'Microsoft JhengHei';font-weight: bold" id="loginStatus"></a>
                             </li>
                         </ul>
                     </div>
@@ -1098,7 +1101,7 @@
                     </p>
                 </div>
 
-                <div class="form-group" style="border: solid mediumpurple;border-radius: 6px;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" id="calender">
+                <div class="form-group" style="border: solid mediumpurple;border-radius: 6px;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF;padding-left: 5px;padding-top: 2px;padding-right: 3px;" id="calender">
                     <label>选择提醒时间(提示将会通过邮件发送)：</label>
                     <div class='input-group date' id='datetimepicker2'>
                         <input type='text' class="form-control" id="dateText"/>
@@ -1107,8 +1110,12 @@
                 </span>
                         <button class="btn btn-default" style="margin-bottom: 24px" id="setAlert">提交</button>
                     </div>
-                    <button type="button" id="delAlert">删除已设提醒
-                    </button>
+                </div>
+                <div style="border: solid mediumpurple;border-radius: 6px;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" >
+                    <p style="font-size: 20px;padding-left: 2vh;padding-bottom: 1vh" ><i class="fa fa-bell-slash-o" style="color:mediumpurple;font-size:25px" id="delAlert"></i>
+                        删除已设提醒
+                    </p>
+
                 </div>
                 <div style="border: solid mediumpurple;border-radius: 6px;margin: 1vh 1vh 1vh 1vh;background-color: #FFFFFF" >
                     <p style="font-size: 20px;padding-left: 2vh;padding-bottom: 1vh" ><i class="fa fa-calendar-minus-o" style="color:mediumpurple;font-size:25px" id="is-daily"></i>
@@ -1117,30 +1124,13 @@
 
                 </div>
 
+
             </div>
-        </div>
-        <div class="col-md-3" style="height: 90vh;padding-top: 2vh">
-
-            <div style="margin: 2px 2px 2px 2px">
-                <p id="register-date">
-
-                </p>
-            </div>
-
-
         </div>
     </div>
 </div>
 <div class="my-5 py-5">
 </div>
-
-<!-- Link to page
-================================================== -->
-
-<!--<a href="https://front.codes/" class="logo" target="_blank">-->
-<!--    <img src="https://assets.codepen.io/1462889/fcy.png" alt="">-->
-<!--</a>-->
-
 
 
 </body>

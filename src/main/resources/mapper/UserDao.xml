@@ -27,5 +27,9 @@
         select RegisterDate from todo.usrs
         where UsrId = #{UsrId};
     </select>
+    <select id="getUser" resultType="User">
+        select * from todo.usrs
+        where UsrId = #{UsrId};
+    </select>
 </mapper>
 

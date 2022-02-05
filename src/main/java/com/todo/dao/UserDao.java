@@ -17,4 +17,5 @@ public interface UserDao {
                       @Param("RegisterDate")Date RegisterDate);
     User checkUsrId(@Param("UsrId") int UsrId);
     Date getRegisterDate(@Param("UsrId") int UsrId);
+    User getUser(@Param("UsrId") int UsrId);
 }

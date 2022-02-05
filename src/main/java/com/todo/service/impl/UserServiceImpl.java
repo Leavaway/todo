@@ -63,5 +63,15 @@ public class UserServiceImpl implements UserService {
         return day;
     }
 
+    @Override
+    public String getUserName(int UsrId) {
+        return userDao.getUser(UsrId).getUsrName();
+    }
+
+    @Override
+    public User getUser(int UsrId) {
+        return userDao.getUser(UsrId);
+    }
+
 
 }

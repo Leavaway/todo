@@ -14,4 +14,8 @@ public interface UserService {
     public User checkUsrEmail(String useremail);
 
     public int getDate(int UsrId) throws ParseException;
+
+    public String getUserName(int UsrId);
+
+    public User getUser(int UsrId);
 }

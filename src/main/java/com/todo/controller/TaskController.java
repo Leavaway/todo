@@ -29,16 +29,20 @@ public class TaskController {
         String TaskId =httpServletRequest.getParameter("isImportant");
         if (taskContent!=null){
             User user = (User) httpSession.getAttribute("user");
-            int UsrId = user.getUsrId();
-            taskService.newTask(UsrId, taskContent);
-            //在页面更改信息后需要重新设置对应的session,请注意
-            user.setTasks(taskService.getTasks(UsrId));
-            httpSession.setAttribute("user",user);
-            return "redirect:/";
+            if (user!=null){
+                int UsrId = user.getUsrId();
+                taskService.newTask(UsrId, taskContent);
+                //在页面更改信息后需要重新设置对应的session,请注意
+                user.setTasks(taskService.getTasks(UsrId));
+                httpSession.setAttribute("user",user);
+                return "redirect:/";
+            }
         }else if (isImportant!=null&&TaskId!=null){
             User user = (User) httpSession.getAttribute("user");
-            taskService.IsImportant(user.getUsrId(),Integer.parseInt(TaskId),Integer.parseInt(isImportant));
-            return "redirect:/";
+            if (user!=null){
+                taskService.IsImportant(user.getUsrId(),Integer.parseInt(TaskId),Integer.parseInt(isImportant));
+                return "redirect:/";
+            }
         }
         return "redirect:/";
     }
