@@ -977,17 +977,6 @@
                     }
                     todo.remove();
                 }
-                if (item.className === "fa fa-times-rectangle") {
-                    const todo = item.parentElement.parentElement;
-                    $.post("delete",{
-                        "usrid":todo.getAttribute("usrid"),
-                        "taskid":todo.getAttribute("taskid")
-                    });
-                    if($("#sidebar").attr("taskid")==todo.getAttribute("taskid")&&$("#sidebar").attr("usrid")==todo.getAttribute("usrid")){
-                        $("#sidebar").hide();
-                    }
-                    todo.remove();
-                }
             });
             document.querySelector("#logOut").addEventListener("click",evt => {
                 document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
