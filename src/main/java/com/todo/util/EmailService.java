@@ -30,12 +30,14 @@ public class EmailService {
      * @throws Exception
      */
     public String sendMail(String user, String password, String host,
-                           String from, String to, String subject, String content)
+                           String from, String to, String subject, String content,String port)
             throws Exception {
         if (to != null){
             Properties props = System.getProperties();
             props.put("mail.smtp.host", host);
             props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.port",port);
+            props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
             MailAuthenticator auth = new MailAuthenticator();
             MailAuthenticator.USERNAME = user;
             MailAuthenticator.PASSWORD = password;

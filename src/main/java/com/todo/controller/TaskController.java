@@ -52,8 +52,11 @@ public class TaskController {
     }
     @PostMapping("setAlert")
     public void setAlert(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse) throws ParseException {
-        taskService.setAlert(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")),httpServletRequest.getParameter("alertTime"));
+        String alertTime = httpServletRequest.getParameter("alertTime");
+        if (alertTime!=""&&alertTime!=null){
+            taskService.setAlert(Integer.parseInt(httpServletRequest.getParameter("usrid")),Integer.parseInt(httpServletRequest.getParameter("taskid")),httpServletRequest.getParameter("alertTime"));
 
+        }
     }
     @PostMapping("delete")
     public void delTask(HttpServletRequest httpServletRequest, HttpSession httpSession, HttpServletResponse httpServletResponse){

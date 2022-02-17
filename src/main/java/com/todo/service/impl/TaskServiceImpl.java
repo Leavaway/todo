@@ -90,20 +90,21 @@ public class TaskServiceImpl implements TaskService {
             System.out.println("---");
             if (a.equals(b)){
                 EmailService emailService = new EmailService();
-                String user = "15757610036@163.com";
-                String password = "TLTWNSKXWDZWBFSJ";
-                String host = "smtp.163.com";
-                String from = "15757610036@163.com";
+                String user = "3404277428@qq.com";
+                String password = "nzboktqldrdccigc";
+                String host = "smtp.qq.com";
+                String port = "465";
+                String from = "3404277428@qq.com";
                 String to = alert.getUsrEmail();// 收件人
                 String subject = "AlertEmail";
                 //邮箱内容
                 StringBuffer sb = new StringBuffer();
                 sb.append("<!DOCTYPE>"+"<div bgcolor='#f1fcfa'   style='border:1px solid #d9f4ee; font-size:14px; line-height:22px; color:#005aa0;padding-left:1px;padding-top:5px;   padding-bottom:5px;'><span style='font-weight:bold;'>温馨提示：</span>"
-                        + "<div style='width:950px;font-family:arial;'>欢迎使用wedo，您给您的任务<p><b>"+alert.getTask()+"</b></p>设置的提醒时间为：<br/><h2 style='color:green'>"+alert.getAlert()+"</h2><br/>本邮件由系统自动发出，请勿回复。<br/>请注意您的安排，感谢您的使用。<br/>Wedo 运营组</div>"
+                        + "<div style='width:950px;font-family:arial;'>欢迎使用wido，您给您的任务<p><b>"+alert.getTask()+"</b></p>设置的提醒时间为：<br/><h2 style='color:green'>"+alert.getAlert()+"</h2><br/>本邮件由系统自动发出，请勿回复。<br/>请注意您的安排，感谢您的使用。<br/>Wido 运营组</div>"
                         +"</div>");
                 try {
                     String res = emailService.sendMail(user, password, host, from, to,
-                            subject, sb.toString());
+                            subject, sb.toString(),port);
                     System.out.println(res);
                 } catch (Exception e) {
                     // TODO Auto-generated catch block
