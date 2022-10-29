@@ -3,9 +3,89 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.todo.dao.TaskDao">
+<!--    <resultMap id="task" type="Task">-->
+<!--        <id property="id" column="id"/>-->
+<!--        <result property="TaskId" column="TaskId"></result>-->
+<!--        <result property="UsrId" column="UsrId"></result>-->
+<!--        <result property="Task" column="Task"></result>-->
+
+<!--    </resultMap>-->
     <select id="getTask" resultType="Task">
         select * from todo.task
         where UsrId = #{UsrId};
+    </select>
+    <select id="getSpeTask" resultType="Task">
+        select * from todo.task
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </select>
+    <select id="getTarTask" resultType="String">
+        select Task from todo.task
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </select>
+    <select id="getTaskId" resultType="int">
+        select Max(TaskId) from todo.task where UsrId = #{UsrId};
+    </select>
+    <insert id="addNewTask">
+        insert into todo.task
+        values (#{TaskId},#{UsrId},#{IsImportant},#{IsComplete},#{IsDaily},#{AlertTime},#{Task});
+    </insert>
+    <update id="updateTask">
+        update todo.task
+        set Task = #{Task}
+        where UsrId = #{UsrId};
+    </update>
+    <update id="isImportantTask">
+        update todo.task
+        set IsImportant = #{IsImportant}
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <select id="getEmail" resultType="String">
+        select UsrEmail from todo.usrs
+        where UsrId = #{UsrId};
+    </select>
+    <update id="setAlert">
+        update todo.task
+        set AlertTime = #{AlertTime}
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <select id="getDailyTask" resultType="Task">
+        select * from todo.task
+        where UsrId = #{UsrId} and IsDaily = 1;
+    </select>
+    <update id="completeTask">
+        update todo.task
+        set IsComplete = 1
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <delete id="deleteTask">
+        delete from todo.task
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </delete>
+    <insert id="addDailyTask">
+        insert into todo.dailyTask
+        values (#{TaskId},#{UsrId},#{IsImportant},#{IsComplete},#{IsDaily},#{Task});
+    </insert>
+    <update id="setDaily">
+        update todo.task
+        set IsDaily = 1
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <update id="cancelDaily">
+        update todo.task
+        set IsDaily = 0
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </update>
+    <delete id="delDailyTask">
+        delete from todo.dailyTask
+        where UsrId = #{UsrId} and Task = #{Task};
+    </delete>
+    <select id="getAllDaily">
+        select *
+        from todo.dailyTask;
+    </select>
+    <select id="getCompleteTasks" resultType="Task">
+        select * from todo.task
+        where UsrId = #{UsrId} and IsComplete = 1;
     </select>
 </mapper>
 

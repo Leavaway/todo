@@ -2,6 +2,8 @@ package com.todo;
 
 
 import com.todo.pojo.Task;
+import com.todo.service.TaskService;
+import com.todo.service.UserService;
 import com.todo.service.impl.TaskServiceImpl;
 import com.todo.service.impl.UserServiceImpl;
 import com.todo.util.GetSqlSession;
@@ -13,19 +15,26 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
+import java.util.List;
+
+//@EnableAutoConfiguration(exclude={DataSourceAutoConfiguration.class})
 @SpringBootTest
-@MapperScan
+//@MapperScan("com.todo.*")
 class TodoApplicationTests {
     @Autowired
-    TaskServiceImpl TaskServiceImpl;
-    @Autowired
-    UserServiceImpl UserServiceImpl;
+    TaskService taskService;
     @Test
     void contextLoads() {
-        SqlSession sqlSession = GetSqlSession.createSqlSession();
-//        Task task = TaskServiceImpl.getTasks(1);
-//        System.out.println(task.getTask());
+//        System.out.println(taskService.getTaskId(1));
+//        taskService.newTask(2,"Second task");
+        List<Task> taskList = taskService.getTasks(1);
+        for (Task t:
+             taskList) {
+            System.out.println(t.getTaskId());
+            System.out.println(t.getTask());
+            System.out.println("-----");
+        }
+
     }
 
 }

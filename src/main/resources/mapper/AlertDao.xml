@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.todo.dao.AlertDao">
+    <insert id="addAlert">
+        insert into todo.alert
+        values (#{UsrId},#{Alert},#{Task},#{UsrEmail},#{TaskId});
+    </insert>
+    <select id="getAlerts" resultType="Alert">
+        select * from todo.alert;
+    </select>
+    <delete id="delAlert">
+        delete from todo.alert
+        where UsrId = #{UsrId} and TaskId = #{TaskId};
+    </delete>
+</mapper>
+

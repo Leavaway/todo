@@ -70,6 +70,10 @@
     </style>
     <script>
         $(function() {
+            // let x = decodeURIComponent(document.cookie.split("=")[1]);
+            if(document.cookie=="status=0"){
+                alert("用户名或者密码错误");
+            };
             const usrName = document.querySelector(".usr-name");
             const password = document.querySelector(".pwd");
             const loginBtn = document.querySelector(".but");

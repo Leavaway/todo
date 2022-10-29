@@ -1,14 +1,24 @@
 package com.todo.controller;
 
+import com.todo.pojo.Task;
 import com.todo.pojo.User;
+import com.todo.service.TaskService;
 import com.todo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Collection;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/admin")
@@ -16,6 +26,9 @@ public class LoginController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private TaskService taskService;
 
     @GetMapping()
     public String loginPage(HttpSession session){
@@ -25,58 +38,65 @@ public class LoginController {
 //        return "admin/login";
         return "login";
     }
-
-//    @GetMapping("login")
-//    public String login(HttpSession session){
-//        if (session.getAttribute("user")!=null) {
-//            return "admin/index";
-//        } else {
-//            return "redirect:/admin";
-//        }
+//    @RequestMapping()
+//    public void loginReturn(@RequestParam(value = "task*") String task){
+//
 //    }
+
     @PostMapping("login")
     public String login(HttpServletRequest httpServletRequest,
                         HttpSession session,
-                        RedirectAttributes attributes) {
+                        HttpServletResponse httpServletResponse) throws IOException {
         String username = httpServletRequest.getParameter("UsrName");
         String password = httpServletRequest.getParameter("UsrPwd");
-        //访问时的sessionId
-        System.out.println(session.getId());
         //验证用户名和密码
-        User user1 = userService.checkUserName(username);
-//        if(user1==null){
-//            return "404";
-//        }
         User user = userService.checkUser(username, password);
         if (user != null) {
             session.setAttribute("user", user);
             //验证成功登录，设置session的attr后再次获取sessionId
-            System.out.println(session.getAttribute("user"));
-            return "todo";
+            user.setTasks(taskService.getTasks(user.getUsrId()));
+            return "redirect:/";
         } else {
-            attributes.addFlashAttribute("msg", "用户名或密码错误");
-            return "redirect:/admin";
+            Cookie cookie = new Cookie("status","0");
+            httpServletResponse.addCookie(cookie);
+            return "login";
         }
+
     }
     @GetMapping("register")
     public String register(){
         return "register";
     }
     @PostMapping("register")
-    public String UsrRegister(HttpServletRequest httpServletRequest){
+    public String UsrRegister(HttpServletRequest httpServletRequest,HttpServletResponse httpServletResponse){
         String UsrName = httpServletRequest.getParameter("UsrName");
         String UsrPwd = httpServletRequest.getParameter("UsrPwd");
         String UsrEmail = httpServletRequest.getParameter("UsrEmail");
+        String CheckPwd = httpServletRequest.getParameter("CheckPwd");
+        User user1 = userService.checkUserName(UsrName);
+        User user2 = userService.checkUsrEmail(UsrEmail);
+        if(!UsrPwd.equals(CheckPwd)){
+            Cookie cookie = new Cookie("status","7");
+            httpServletResponse.addCookie(cookie);
+            return "register";
+        }
+        if (user1!=null){
+            Cookie cookie = new Cookie("status","5");
+            httpServletResponse.addCookie(cookie);
+            return "register";
+        }else if (user2!=null){
+            Cookie cookie = new Cookie("status","6");
+            httpServletResponse.addCookie(cookie);
+            return "register";
+        }
         if(userService.userRegister(UsrName, UsrPwd, UsrEmail)){
             return "login";
         }else {
-            return "404";
+            Cookie cookie = new Cookie("status","5");
+            httpServletResponse.addCookie(cookie);
+            return "register";
         }
     }
 
-    @GetMapping("/logout")
-    public String logout(HttpSession session){
-        session.removeAttribute("user");
-        return "redirect:/admin";
-    }
+
 }

@@ -8,15 +8,23 @@
         where UsrName = #{UsrName} and UsrPwd = #{UsrPwd};
     </select>
     <select id="checkUserName" resultType="User">
-        select UsrName from todo.usrs
+        select * from todo.usrs
         where UsrName = #{UsrName};
+    </select>
+    <select id="checkUsrEmail" resultType="User">
+        select * from todo.usrs
+        where UsrEmail = #{UsrEmail};
     </select>
     <insert id="registerUser">
         insert into todo.usrs
-        values (#{UsrId}, #{UsrName}, #{UsrPwd}, #{UsrEmail});
+        values (#{UsrId}, #{UsrName}, #{UsrPwd}, #{UsrEmail},#{RegisterDate});
     </insert>
     <select id="checkUsrId" resultType="User">
         select UsrId from todo.usrs
+        where UsrId = #{UsrId};
+    </select>
+    <select id="getRegisterDate" resultType="java.sql.Date">
+        select RegisterDate from todo.usrs
         where UsrId = #{UsrId};
     </select>
 </mapper>

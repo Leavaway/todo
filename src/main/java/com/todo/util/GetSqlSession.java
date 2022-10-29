@@ -7,6 +7,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 public class GetSqlSession {
     public static SqlSession createSqlSession(){
@@ -27,6 +28,6 @@ public class GetSqlSession {
     }
 
     public static void main(String[] args) {
-        System.out.println(createSqlSession());
+
     }
 }
